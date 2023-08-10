@@ -5,8 +5,8 @@ import Carousel from "../models/Carousel.js"
 
 export const addItem = async (req, res) => {
     try {
-        const { alt, type, order } = req.body //s
-        const picturePath = req.file.filename
+        const { alt, type, order } = req.body
+        const picturePath = req.file.filename //aa
 
         const newItem = new Carousel({ alt, picturePath, type, order })
 

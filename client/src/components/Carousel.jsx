@@ -21,23 +21,13 @@ import { useDispatch } from "react-redux";
 import { toggleModel } from "../state/authSlice"
 
 const Carousel = ({ carouselItems, setCarouselItems }) => {
-    const [state, setState] = useState(['1', '2', '3', '4', '5'])
-    const [loaded, setLoaded] = useState(true)
-    const [play, setPlay] = useState([])
-    const [vidId, setVidId] = useState()
-    const [newCArousselItems, setNewCArousselItems] = useState([])
-    const [availHeight, setAvailHeight] = useState(screen.availHeight)
-    const [availWidth, setAvailWidth] = useState(screen.availWidth)
-
+    const [loaded, setLoaded] = useState(false)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        // window.addEventListener("orientationchange", function () {
-        //     // Announce the new orientation number
-        //     setLoaded(true)
-        // }, false);
+    useState(()=> {
+        setLoaded(true)
 
-    }, [loaded])
+    }, [])
 
     const pagination = {
         clickable: true,
@@ -129,60 +119,59 @@ const Carousel = ({ carouselItems, setCarouselItems }) => {
     return (
         <>
             <Container className="carousel">
-                {/* {loaded
-                    ? */}
-                    <div>
+                <div>
                     <img src={tw} alt="" className="imageee" />
-                    </div>
-                    <Swiper
-                        effect={"coverflow"}
-                        grabCursor={true}
-                        centeredSlides={true}
-                        slidesPerView={"auto"}
-                        coverflowEffect={{
-                            rotate: 100,
-                            stretch: 0,
-                            depth: 100,
-                            modifier: 1,
-                            slideShadows: true,
-                        }}
-                        pagination={pagination}
-                        modules={[EffectCoverflow, Pagination]}
-                        className="mySwiper"
-                    >
-                        {
-                            (carouselItems || []).map((s) =>
+                </div>
 
-                                <SwiperSlide onClick={() => dispatch(toggleModel({ model: false }))} key={s._id} >
-                                    {s.type === 'i' &&
-                                        <img src={`http://localhost:3001/assets/${s.picturePath}`} alt={s.alt} />
-                                    }
-                                    {s.type === 'v' &&
-                                        <>
-                                            <video autoPlay muted loop id={`${s._id}`}  >
-                                                <source src={`http://localhost:3001/assets/${s.picturePath}`} />
-                                            </video>
-                                            {s.video
-                                                ?
-                                                <PauseIcon className="playbutton" onClick={() => { handelClick(s._id) }} />
-                                                : <PlayArrowIcon className="playbutton" onClick={() => { handelClick(s._id) }} />
-                                            }
-                                            {s.sound
-                                                ?
-                                                <MusicNoteIcon className="soundbutton" onClick={() => { handelSound(s._id) }} />
-                                                : <MusicOffIcon className="soundbutton" onClick={() => { handelSound(s._id) }} />
-                                            }
-                                            <ReplayIcon className="resetbutton" onClick={() => { handelReset(s._id) }} />
-                                        </>
-                                    }
-                                </SwiperSlide>
+                {loaded && 
+                <Swiper
+                    effect={"coverflow"}
+                    grabCursor={true}
+                    centeredSlides={true}
+                    slidesPerView={"auto"}
+                    coverflowEffect={{
+                        rotate: 100,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 1,
+                        slideShadows: true,
+                    }}
+                    pagination={pagination}
+                    modules={[EffectCoverflow, Pagination]}
+                    className="mySwiper"
+                >
+                    {
+                        (carouselItems || []).map((s) =>
 
-                            )
-                        }
-                    </Swiper>
-                    
-                    {/* <div>pls use landscape</div> */}
-                {/* } */}
+                            <SwiperSlide onClick={() => dispatch(toggleModel({ model: false }))} key={s._id} >
+                                {s.type === 'i' &&
+                                
+                                    <img src={`http://localhost:3001/assets/${s.picturePath}`} alt={s.alt} />
+                                }
+                                {s.type === 'v' &&
+                                    <>
+                                        <video autoPlay muted loop id={`${s._id}`}  >
+                                            <source src={`http://localhost:3001/assets/${s.picturePath}`} />
+                                        </video>
+                                        {s.video
+                                            ?
+                                            <PauseIcon className="playbutton" onClick={() => { handelClick(s._id) }} />
+                                            : <PlayArrowIcon className="playbutton" onClick={() => { handelClick(s._id) }} />
+                                        }
+                                        {s.sound
+                                            ?
+                                            <MusicNoteIcon className="soundbutton" onClick={() => { handelSound(s._id) }} />
+                                            : <MusicOffIcon className="soundbutton" onClick={() => { handelSound(s._id) }} />
+                                        }
+                                        <ReplayIcon className="resetbutton" onClick={() => { handelReset(s._id) }} />
+                                    </>
+                                }
+                            </SwiperSlide>
+
+                        )
+                    }
+                </Swiper>
+                }
             </Container>
         </>
     )
@@ -204,6 +193,7 @@ const Container = styled(Box)`
         width :100% ;
         background-size: cover ;
         overflow : hidden ;
+        position: absolute;
    }
 }
 @media screen and (orientation:landscape)
@@ -232,38 +222,36 @@ const Container = styled(Box)`
 }
 
 .playbutton {
-    z-index: 999;
+    z-index: 9999;
     position: absolute;
     right: 1%;
     top : 3%;
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    background-color : transparent;
     color: #fff;
 
 
 }
 .resetbutton{
-    z-index: 999;
+    z-index: 9999;
     position: absolute;
     right: 1%;
     top : 8%;
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    background-color: transparent;
     color: #fff;
+   
 }
 .soundbutton{
-    z-index: 999;
+    z-index: 9999;
     position: absolute;
     right: 1%;
     top : 13%;
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    background-color: transparent;
     color: #fff;
 }
 

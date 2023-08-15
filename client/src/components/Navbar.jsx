@@ -73,7 +73,7 @@ const Navbar = () => {
                   </NavLink>
                 </li>
                 {(user !== null) && <li className="menu-item">
-                  <NavLink to="/dashboard">
+                  <NavLink to="/dashboard/carousel">
                     DB
                   </NavLink>
                 </li>}
@@ -121,7 +121,7 @@ const Container = styled(Box)`
 }
 
 .menu-button:active {
-  scale: 0.8;
+  /* scale: 0.8; */
 }
 
 .icon-plus {
@@ -200,8 +200,8 @@ const Container = styled(Box)`
 
 
   @keyframes animate {
-    0% {opacity : 0;}
-    100% {opacity : 0.8;}
+    from {opacity : 0;}
+    to {opacity : 0.7;}
 
   }
 
@@ -284,7 +284,7 @@ const Container = styled(Box)`
 }
 
 #menu:target>.menu-item:has( .active){
-opacity: 1;
+opacity: 0.7;
 a {
   color: #fff;
   box-shadow: 0 0 3px 5px rgb(2, 253, 253);

@@ -28,6 +28,7 @@ video {
   height: 100vh;
   -o-object-fit: cover;
   object-fit: cover;
+  pointer-events: none;
 }
 
 .mySwiper {
@@ -73,10 +74,10 @@ video {
   
 }
 
-.Contact {
-  opacity: 0.8;
+/* .Contact {
+  opacity: 0.7;
 
-}
+} */
 
 
 

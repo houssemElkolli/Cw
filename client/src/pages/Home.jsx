@@ -17,28 +17,28 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios.get("http://localhost:3001/carousel/getCarouselItems")
-      .then((res) => {
-        console.log(res.data);
-        setCarouselItems(res.data.carouselItems)
-        setLoaded(true)
-      })
+    axios.get("http://localhost:3001/carousel/getCarouselItems",)
+    .then((res) => {
+      console.log(res.data);
+      setCarouselItems(res.data.carouselItems)
+      setLoaded(true)
+    })
 
-  }, [])
+}, [])
 
-  return (
-    <>
-      {loaded &&
-        <Container>
-          <Carousel carouselItems={carouselItems} setCarouselItems={setCarouselItems} />
-          <Socials />
-          <Contact />
-          <Button type="button" variant="contained" endIcon={<SendIcon />} onClick={() => { dispatch(toggleModel({ model: true })) }} className="contact-button">
-            Contact
-          </Button>
-        </Container>}
-    </>
-  )
+return (
+  <>
+    {loaded &&
+      <Container>
+        <Carousel carouselItems={carouselItems} setCarouselItems={setCarouselItems} />
+        <Socials />
+        <Contact />
+        <Button type="button" variant="contained" endIcon={<SendIcon />} onClick={() => { dispatch(toggleModel({ model: true })) }} className="contact-button">
+          Contact
+        </Button>
+      </Container>}
+  </>
+)
 }
 
 export default Home
@@ -55,6 +55,7 @@ position: relative;
     opacity: 0.7;
     &:hover {
       opacity: 1;
+      background-color: rgb(50, 116, 105);
 
     }
   }

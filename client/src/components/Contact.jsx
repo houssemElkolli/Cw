@@ -296,17 +296,25 @@ const Container = styled(Box)`
     background-color: rgb(255, 253, 253); 
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     font-size: 12px;
+    opacity: 70%;
+
 
       animation-name: appear;
-      animation-duration: 0.3s;
-      animation-timing-function: cubic-bezier(.26, .53, .74, 1.48);   
+      animation-duration: 0.5s;
+      
           @keyframes appear {
-          0% {
-            opacity: 0;
+          0% { opacity: 0%;
+            scale: 0;
+}
+          70% {
+            opacity: 0%;
+            scale: 0.7;
           }
 
           100% {
-            opacity: 0.7;
+            opacity: 70%;
+            scale: 1;
+
           }
         }
     .form-box {
@@ -318,15 +326,6 @@ const Container = styled(Box)`
         padding: 10px 30px;
         padding-bottom: 30px;
         border: 3px solid rgb(50, 116, 105);
-        
-          /* button {
-          opacity: 0.8;
-          &:hover {
-            opacity: 1;
-          } 
-        }*/
-        
-        
       }
 
 

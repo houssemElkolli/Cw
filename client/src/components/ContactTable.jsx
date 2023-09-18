@@ -7,7 +7,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,11 +21,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import Collapse from "@mui/material/Collapse";
-import ImageListItem from "@mui/material/ImageListItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import axios from "../api/axios";
+import { MenuItem, Select } from "@mui/material";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function descendingComparator(a, b, orderBy) {
@@ -63,28 +64,52 @@ function stableSort(array, comparator) {
 
 const headCells = [
     {
-        id: "name",
+        id: "firstName",
         numeric: false,
         disablePadding: true,
-        label: "Name",
+        label: "First Name",
     },
     {
-        id: "image",
+        id: "lastName",
         numeric: false,
         disablePadding: false,
-        label: "Image",
+        label: "Last Name",
     },
     {
-        id: "createdAt",
+        id: "verified",
+        numeric: false,
+        disablePadding: false,
+        label: "Verified",
+    },
+    {
+        id: "email",
+        numeric: false,
+        disablePadding: false,
+        label: "Email",
+    },
+    {
+        id: "phoneNumber",
+        numeric: false,
+        disablePadding: false,
+        label: "Phone Number",
+    },
+    {
+        id: "companyName",
+        numeric: false,
+        disablePadding: false,
+        label: "Company Name",
+    },
+    {
+        id: "message",
+        numeric: false,
+        disablePadding: false,
+        label: "Message",
+    },
+    {
+        id: "created_at",
         numeric: false,
         disablePadding: false,
         label: "Created-at",
-    },
-    {
-        id: "updatedAt",
-        numeric: false,
-        disablePadding: false,
-        label: "Updated-at",
     },
 ];
 
@@ -185,7 +210,7 @@ function EnhancedTableToolbar({ numSelected, deleteSlectedItems }) {
                     id="tableTitle"
                     component="div"
                 >
-                    Partners
+                    Contacts
                 </Typography>
             )}
 
@@ -215,14 +240,15 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
-export default function PartnersTable({ rld, setItemToUpdate, setUpdateTime }) {
-    const axiosPrivate = useAxiosPrivate()
+export default function ContactTable({ rld, numberOfPages, totalNumber }) {
+    const axiosPrivate = useAxiosPrivate();
     const [order, setOrder] = useState("asc");
     const [orderBy, setOrderBy] = useState("calories");
     const [selected, setSelected] = useState([]);
     const [page, setPage] = useState(0);
+    const [pageNumber, setPageNumber] = useState(0);
     const [dense, setDense] = useState(false);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(100);
     const [rows, setRows] = useState([]);
     const [lod, setLod] = useState(false);
     const [deleteRLod, setDeleteRLod] = useState(false);
@@ -230,15 +256,18 @@ export default function PartnersTable({ rld, setItemToUpdate, setUpdateTime }) {
     const [cellId, setCellId] = useState(0);
 
     useEffect(() => {
-        axiosPrivate.get("/partners/getPartners").then((res) => {
-            setRows(res.data.partners);
-            setLod(!lod);
-        });
-    }, [rld, deleteRLod]);
+        axiosPrivate
+            .get(`/contacts/getContacts?pageNumber=${pageNumber}`)
+            .then((res) => {
+                setRows(res.data.contacts);
+                setLod(!lod);
+                console.log(numberOfPages);
+            });
+    }, [rld, deleteRLod, pageNumber]);
 
     const deleteSlectedItems = () => {
         console.log(selected);
-        axiosPrivate.post("/partners/deletePartner", selected).then((res) => {
+        axiosPrivate.post("/contacts/deleteContact", selected).then((res) => {
             console.log(res);
             setDeleteRLod(!deleteRLod);
             setSelected([]);
@@ -315,7 +344,7 @@ export default function PartnersTable({ rld, setItemToUpdate, setUpdateTime }) {
                     numSelected={selected.length}
                     deleteSlectedItems={deleteSlectedItems}
                 />
-                <TableContainer sx={{ maxHeight: "65vh" }}>
+                <TableContainer sx={{ maxHeight: "69vh" }}>
                     <Table
                         sx={{ minWidth: "750", borderRadius: "3%" }}
                         aria-labelledby="tableTitle"
@@ -339,11 +368,6 @@ export default function PartnersTable({ rld, setItemToUpdate, setUpdateTime }) {
                                 return (
                                     <Fragment key={row._id}>
                                         <TableRow
-                                            onDoubleClick={() => {
-                                                setUpdateTime(true);
-                                                setItemToUpdate(row);
-                                                console.log(row);
-                                            }}
                                             hover
                                             role="checkbox"
                                             aria-checked={isItemSelected}
@@ -373,7 +397,24 @@ export default function PartnersTable({ rld, setItemToUpdate, setUpdateTime }) {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.name}
+                                                {row.firstName}
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                {row.lastName}
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                {row.verified
+                                                    ? "true"
+                                                    : "false"}
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                {row.email}
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                {row.phoneNumber}
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                {row.companyName}
                                             </TableCell>
                                             <TableCell>
                                                 <IconButton
@@ -393,9 +434,6 @@ export default function PartnersTable({ rld, setItemToUpdate, setUpdateTime }) {
                                             </TableCell>
                                             <TableCell align="left">
                                                 {row.createdAt?.slice(0, 10)}
-                                            </TableCell>
-                                            <TableCell align="left">
-                                                {row.updatedAt?.slice(0, 10)}
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -418,20 +456,15 @@ export default function PartnersTable({ rld, setItemToUpdate, setUpdateTime }) {
                                                         sx={{ margin: 1 }}
                                                         key={row._id}
                                                     >
-                                                        <ImageListItem
-                                                            sx={{
-                                                                width: "200px",
-                                                                height: "200px",
-                                                            }}
+                                                        <Typography
+                                                            variant="h6"
+                                                            component="h1"
                                                         >
-                                                            <img
-                                                                src={`http://localhost:3001/assets/${row.picturePath}`}
-                                                                alt={
-                                                                    row.picturePath
-                                                                }
-                                                                loading="lazy"
-                                                            />
-                                                        </ImageListItem>
+                                                            {row.subject}
+                                                        </Typography>
+                                                        <Typography variant="p">
+                                                            {row.message}
+                                                        </Typography>
                                                     </Box>
                                                 </Collapse>
                                             </TableCell>
@@ -451,15 +484,119 @@ export default function PartnersTable({ rld, setItemToUpdate, setUpdateTime }) {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                <Box
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns: " auto auto auto auto ",
+                        gridColumnGap: "10px",
+                        justifyItems: "center",
+                        alignItems: "center",
+                        justifyContent: "end",
+                        padding: "0px 15px",
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns: "auto auto",
+                            gridGap: "10px",
+                            justifyItems: "center",
+                            alignItems: "center",
+                            marginRight: "10px",
+                        }}
+                    >
+                        <Typography>Page Number</Typography>
+                        <Select
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            value={pageNumber}
+                            label="Type"
+                            name="type"
+                            sx={{
+                                height: "50%",
+                            }}
+                        >
+                            {Array(numberOfPages)
+                                .fill(0)
+                                .map((item, index) => (
+                                    <MenuItem
+                                        onClick={() => setPageNumber(index)}
+                                        value={index}
+                                        key={index}
+                                    >
+                                        {index + 1}
+                                    </MenuItem>
+                                ))}
+                        </Select>
+                    </Box>
+                    {pageNumber === 0 && (
+                        <Typography>01 - 100 of {totalNumber} </Typography>
+                    )}
+                    {pageNumber > 0 && pageNumber + 1 !== numberOfPages && (
+                        <Typography>
+                            {pageNumber * 100 + 1} - {pageNumber * 100 + 100} of{" "}
+                            {totalNumber}{" "}
+                        </Typography>
+                    )}
+                    {pageNumber + 1 === numberOfPages && (
+                        <Typography>
+                            {pageNumber * 100 + 1} - {totalNumber} of{" "}
+                            {totalNumber}{" "}
+                        </Typography>
+                    )}
+                    <NavigateBeforeIcon
+                        sx={
+                            !(pageNumber === 0) && {
+                                transition:
+                                    "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                                "&:hover": {
+                                    boxShadow:
+                                        "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+                                },
+                                borderRadius: "50%",
+                                cursor: "pointer",
+                            }
+                        }
+                        disable={pageNumber === 0 ? 'true' : 'false'}
+                        style={
+                            pageNumber === 0
+                                ? { color: "grey" }
+                                : { color: "rgba(0, 0, 0, 0.87)" }
+                        }
+                        onClick={() => {
+                            if (pageNumber > 0) {
+                                setPageNumber((pageNumber) => pageNumber - 1);
+                            }
+                        }}
+                    />
+                    <NavigateNextIcon
+                        sx={
+                            !(pageNumber + 1 === numberOfPages) && {
+                                transition:
+                                    "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                                "&:hover": {
+                                    boxShadow:
+                                        "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+                                },
+                                borderRadius: "50%",
+                                cursor: "pointer",
+                            }
+                        }
+                        disable={
+                            pageNumber + 1 === numberOfPages ? 'true' : 'false'
+                        }
+                        style={
+                            pageNumber + 1 === numberOfPages
+                                ? { color: "grey" }
+                                : { color: "rgba(0, 0, 0, 0.87)" }
+                        }
+                        onClick={() => {
+                            if (pageNumber + 1 !== numberOfPages) {
+                                setPageNumber((pageNumber) => pageNumber + 1);
+                            }
+                        }}
+                    />
+                </Box>
             </Paper>
             <FormControlLabel
                 control={

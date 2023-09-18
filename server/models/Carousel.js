@@ -15,8 +15,8 @@ const CarouselSchema = new mongoose.Schema({
         required: [true, "Picture is required"],
     },
     order : {
-        type: Number,
-        required: [true, "Order is required"],
+        type: String,
+        default : 100
     },
     video: {
         type: Boolean,

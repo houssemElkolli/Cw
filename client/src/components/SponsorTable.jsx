@@ -1,34 +1,33 @@
-import { useState, useMemo, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { visuallyHidden } from '@mui/utils';
-import Collapse from '@mui/material/Collapse';
-import ImageListItem from '@mui/material/ImageListItem';
+import { useState, useMemo, useEffect, Fragment } from "react";
+import PropTypes from "prop-types";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { visuallyHidden } from "@mui/utils";
+import Collapse from "@mui/material/Collapse";
+import ImageListItem from "@mui/material/ImageListItem";
 
-
-import axios from 'axios';
-
+import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -41,7 +40,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-    return order === 'desc'
+    return order === "desc"
         ? (a, b) => descendingComparator(a, b, orderBy)
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -64,34 +63,40 @@ function stableSort(array, comparator) {
 
 const headCells = [
     {
-        id: 'name',
+        id: "name",
         numeric: false,
         disablePadding: true,
-        label: 'Name',
+        label: "Name",
     },
     {
-        id: 'image',
+        id: "image",
         numeric: false,
         disablePadding: false,
-        label: 'Image',
+        label: "Image",
     },
     {
-        id: 'createdAt',
+        id: "createdAt",
         numeric: false,
         disablePadding: false,
-        label: 'Created-at',
+        label: "Created-at",
     },
     {
-        id: 'updatedAt',
+        id: "updatedAt",
         numeric: false,
         disablePadding: false,
-        label: 'Updated-at',
+        label: "Updated-at",
     },
 ];
 
 function EnhancedTableHead(props) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-        props;
+    const {
+        onSelectAllClick,
+        order,
+        orderBy,
+        numSelected,
+        rowCount,
+        onRequestSort,
+    } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -102,30 +107,34 @@ function EnhancedTableHead(props) {
                 <TableCell padding="checkbox">
                     <Checkbox
                         color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
+                        indeterminate={
+                            numSelected > 0 && numSelected < rowCount
+                        }
                         checked={rowCount > 0 && numSelected === rowCount}
                         onChange={onSelectAllClick}
                         inputProps={{
-                            'aria-label': 'select all desserts',
+                            "aria-label": "select all desserts",
                         }}
                     />
                 </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'normal'}
+                        align={headCell.numeric ? "right" : "left"}
+                        padding={headCell.disablePadding ? "none" : "normal"}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
+                            direction={orderBy === headCell.id ? order : "asc"}
                             onClick={createSortHandler(headCell.id)}
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (
                                 <Box component="span" sx={visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                    {order === "desc"
+                                        ? "sorted descending"
+                                        : "sorted ascending"}
                                 </Box>
                             ) : null}
                         </TableSortLabel>
@@ -140,13 +149,12 @@ EnhancedTableHead.propTypes = {
     numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
     onSelectAllClick: PropTypes.func.isRequired,
-    order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+    order: PropTypes.oneOf(["asc", "desc"]).isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
 };
 
 function EnhancedTableToolbar({ numSelected, deleteSlectedItems }) {
-
     return (
         <Toolbar
             sx={{
@@ -154,13 +162,16 @@ function EnhancedTableToolbar({ numSelected, deleteSlectedItems }) {
                 pr: { xs: 1, sm: 1 },
                 ...(numSelected > 0 && {
                     bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+                        alpha(
+                            theme.palette.primary.main,
+                            theme.palette.action.activatedOpacity
+                        ),
                 }),
             }}
         >
             {numSelected > 0 ? (
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
+                    sx={{ flex: "1 1 100%" }}
                     color="inherit"
                     variant="subtitle1"
                     component="div"
@@ -169,7 +180,7 @@ function EnhancedTableToolbar({ numSelected, deleteSlectedItems }) {
                 </Typography>
             ) : (
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
+                    sx={{ flex: "1 1 100%" }}
                     variant="h6"
                     id="tableTitle"
                     component="div"
@@ -178,13 +189,16 @@ function EnhancedTableToolbar({ numSelected, deleteSlectedItems }) {
                 </Typography>
             )}
 
-            {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton onClick={deleteSlectedItems}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            ) : ''
+            {
+                numSelected > 0 ? (
+                    <Tooltip title="Delete">
+                        <IconButton onClick={deleteSlectedItems}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                ) : (
+                    ""
+                )
                 //(
                 //   <Tooltip title="Filter list">
                 //     <IconButton>
@@ -201,9 +215,10 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
-export default function SponsorsTable({ rld }) {
-    const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('calories');
+export default function SponsorsTable({ rld, setUpdateTime, setItemToUpdate }) {
+    const axiosPrivate = useAxiosPrivate()
+    const [order, setOrder] = useState("asc");
+    const [orderBy, setOrderBy] = useState("calories");
     const [selected, setSelected] = useState([]);
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(false);
@@ -212,28 +227,26 @@ export default function SponsorsTable({ rld }) {
     const [lod, setLod] = useState(false);
     const [deleteRLod, setDeleteRLod] = useState(false);
     const [open, setOpen] = useState(false);
-    const [cellId, setCellId] = useState(0)
-
+    const [cellId, setCellId] = useState(0);
 
     useEffect(() => {
-        axios.get("http://localhost:3001/sponsors/getSponsors").then((res) => {
-            setRows(res.data.sponsors)
-            setLod(!lod)
-        })
-    }, [rld, deleteRLod])
+        axiosPrivate.get("/sponsors/getSponsors").then((res) => {
+            setRows(res.data.sponsors);
+            setLod(!lod);
+        });
+    }, [rld, deleteRLod]);
 
     const deleteSlectedItems = () => {
         console.log(selected);
-        axios.post("http://localhost:3001/sponsors/deleteSponsor", selected).then((res) => {
+        axiosPrivate.post("/sponsors/deleteSponsor", selected).then((res) => {
             console.log(res);
-            setDeleteRLod(!deleteRLod)
-        })
-    }
-
+            setDeleteRLod(!deleteRLod);
+        });
+    };
 
     const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
+        const isAsc = orderBy === property && order === "asc";
+        setOrder(isAsc ? "desc" : "asc");
         setOrderBy(property);
     };
 
@@ -259,7 +272,7 @@ export default function SponsorsTable({ rld }) {
         } else if (selectedIndex > 0) {
             newSelected = newSelected.concat(
                 selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
+                selected.slice(selectedIndex + 1)
             );
         }
 
@@ -289,20 +302,23 @@ export default function SponsorsTable({ rld }) {
         () =>
             stableSort(rows, getComparator(order, orderBy)).slice(
                 page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage,
+                page * rowsPerPage + rowsPerPage
             ),
-        [order, orderBy, page, rowsPerPage, lod],
+        [order, orderBy, page, rowsPerPage, lod]
     );
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Paper sx={{ width: '100%', mb: 2 }}>
-                <EnhancedTableToolbar numSelected={selected.length} deleteSlectedItems={deleteSlectedItems} />
-                <TableContainer sx={{ maxHeight: '65vh', }}>
+        <Box sx={{ width: "100%" }}>
+            <Paper sx={{ width: "100%", mb: 2 }}>
+                <EnhancedTableToolbar
+                    numSelected={selected.length}
+                    deleteSlectedItems={deleteSlectedItems}
+                />
+                <TableContainer sx={{ maxHeight: "65vh" }}>
                     <Table
-                        sx={{ minWidth: '750', borderRadius: '3%' }}
+                        sx={{ minWidth: "750", borderRadius: "3%" }}
                         aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
+                        size={dense ? "small" : "medium"}
                         stickyHeader
                         aria-label="sticky table"
                     >
@@ -320,23 +336,32 @@ export default function SponsorsTable({ rld }) {
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
-                                    <>
+                                    <Fragment key={row._id}>
                                         <TableRow
+                                            onDoubleClick={() => {
+                                                setUpdateTime(true);
+                                                setItemToUpdate(row);
+                                            }}
                                             hover
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row._id}
                                             selected={isItemSelected}
-                                            sx={{ cursor: 'pointer' }}
+                                            sx={{ cursor: "pointer" }}
                                         >
                                             <TableCell padding="checkbox">
                                                 <Checkbox
-                                                    onClick={(event) => handleClick(event, row._id)}
+                                                    onClick={(event) =>
+                                                        handleClick(
+                                                            event,
+                                                            row._id
+                                                        )
+                                                    }
                                                     color="primary"
                                                     checked={isItemSelected}
                                                     inputProps={{
-                                                        'aria-labelledby': labelId,
+                                                        "aria-labelledby":
+                                                            labelId,
                                                     }}
                                                 />
                                             </TableCell>
@@ -353,31 +378,64 @@ export default function SponsorsTable({ rld }) {
                                                 <IconButton
                                                     aria-label="expand row"
                                                     size="small"
-                                                    onClick={() => { setOpen(!open); setCellId(row._id) }}
+                                                    onClick={() => {
+                                                        setOpen(!open);
+                                                        setCellId(row._id);
+                                                    }}
                                                 >
-                                                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                                    {open ? (
+                                                        <KeyboardArrowUpIcon />
+                                                    ) : (
+                                                        <KeyboardArrowDownIcon />
+                                                    )}
                                                 </IconButton>
                                             </TableCell>
-                                            <TableCell align="left">{row.createdAt?.slice(0, 10)}</TableCell>
-                                            <TableCell align="left">{row.updatedAt?.slice(0, 10)}</TableCell>
+                                            <TableCell align="left">
+                                                {row.createdAt?.slice(0, 10)}
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                {row.updatedAt?.slice(0, 10)}
+                                            </TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                                                <Collapse in={open && row._id === cellId} timeout="auto" unmountOnExit>
-                                                    <Box sx={{ margin: 1 }} key={row._id}>
-                                                        <ImageListItem sx={{ width: '200px', height: '200px' }}>
+                                            <TableCell
+                                                style={{
+                                                    paddingBottom: 0,
+                                                    paddingTop: 0,
+                                                }}
+                                                colSpan={6}
+                                            >
+                                                <Collapse
+                                                    in={
+                                                        open &&
+                                                        row._id === cellId
+                                                    }
+                                                    timeout="auto"
+                                                    unmountOnExit
+                                                >
+                                                    <Box
+                                                        sx={{ margin: 1 }}
+                                                        key={row._id}
+                                                    >
+                                                        <ImageListItem
+                                                            sx={{
+                                                                width: "200px",
+                                                                height: "200px",
+                                                            }}
+                                                        >
                                                             <img
                                                                 src={`http://localhost:3001/assets/${row.picturePath}`}
-                                                                alt={row.picturePath}
+                                                                alt={
+                                                                    row.picturePath
+                                                                }
                                                                 loading="lazy"
-
                                                             />
                                                         </ImageListItem>
                                                     </Box>
                                                 </Collapse>
                                             </TableCell>
                                         </TableRow>
-                                    </>
+                                    </Fragment>
                                 );
                             })}
                             {emptyRows > 0 && (
@@ -403,10 +461,11 @@ export default function SponsorsTable({ rld }) {
                 />
             </Paper>
             <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
+                control={
+                    <Switch checked={dense} onChange={handleChangeDense} />
+                }
                 label="Dense padding"
             />
         </Box>
     );
 }
-

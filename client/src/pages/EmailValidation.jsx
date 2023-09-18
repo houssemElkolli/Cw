@@ -1,52 +1,46 @@
 import { styled } from "@mui/system";
-import {
-  Box,
-  Button,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import { Formik } from "formik";
 import * as yup from "yup";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setLogin } from "../state/authSlice";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
-import PasswordIcon from "@mui/icons-material/Password";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import logo from "../assets/logos/picto-noir.png";
-import LoginIcon from "@mui/icons-material/Login";
+import { useState } from "react";
 
-const Login = () => {
+const EmailValidation = () => {
   const nav = useNavigate();
-  const dispatch = useDispatch();
+  const [err, setErr] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const initialValues = {
     email: "",
-    password: "",
+    code: "",
   };
 
   const validationSchema = yup.object().shape({
     email: yup.string().email("invalid email").required("required"),
-    password: yup.string().required("required"),
+    code: yup.string().required("required").min(6).max(6),
   });
 
   const handleFormSubmit = (data, onSubmitProps) => {
     axios
-      .post("/auth/login", data , { withCredentials : true} )
+      .post("/contacts/validateEmail", data)
       .then((res) => {
         onSubmitProps.resetForm();
-        dispatch(
-          setLogin({
-            accessToken: res.data.accessToken,
-            user : res.data.user
-          })
-        );
-        // localStorage.setItem("token", `Bearer ${res.data.accessToken}`);
-        nav("/");
+        setSuccess(true);
         console.log(res);
       })
+      .then(() => {
+        setTimeout(() => {
+          nav("/");
+        }, 3000);
+      })
       .catch((err) => {
+        setErr(true);
         console.log(err);
       });
   };
@@ -98,7 +92,7 @@ const Login = () => {
                         borderRadius: "30px",
                       }}
                     >
-                      Log In
+                      Email Validation
                     </Typography>
                   </Box>
 
@@ -138,7 +132,7 @@ const Login = () => {
                       gridColumn: "span 4",
                     }}
                   >
-                    <PasswordIcon
+                    <ConfirmationNumberIcon
                       sx={{
                         fontSize: "20px",
                         color: "rgb(2,0,36)",
@@ -147,18 +141,16 @@ const Login = () => {
                       }}
                     />
                     <TextField
-                      label="Password"
-                      name="password"
-                      type="password"
+                      label="Code"
+                      name="code"
+                      type="text"
                       variant="standard"
                       fullWidth
                       sx={{}}
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      value={values.password}
-                      error={
-                        Boolean(touched.password) && Boolean(errors.password)
-                      }
+                      value={values.code}
+                      error={Boolean(touched.code) && Boolean(errors.code)}
                     />
                   </Box>
 
@@ -167,13 +159,12 @@ const Login = () => {
                     type="submit"
                     sx={{
                       gridColumn: "span 4",
-                      marginTop: "20px",
+                      marginTop: "25px",
                       borderRadius: "20px",
-
                     }}
                     variant="contained"
                   >
-                    submit
+                    Submit
                   </Button>
                 </Box>
               </Box>
@@ -184,24 +175,71 @@ const Login = () => {
           <h3>Note</h3>
           <p>
             <span className="p2">
-              Please do not attempt to log in if you are not a member of
-              Creative World
+              Please enter your email with the six digit code that we have
+              emailed you
             </span>
             <br />© 2023 Google LLC, 1600 Amphitheatre Parkway, Mountain View,
             CA 94043, USA
           </p>
         </div>
+
+        {err && (
+          <Alert
+            severity="error"
+            action={
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => setErr(false)}
+              >
+                X
+              </Button>
+            }
+            sx={{
+              position: "fixed",
+              bottom: "2%",
+              right: "2%",
+            }}
+          >
+            <AlertTitle>Error</AlertTitle>
+            Somthing Went Wrong — Either <strong>Email</strong> or{" "}
+            <strong>Code</strong> are wrong!
+          </Alert>
+        )}
+        {success && (
+          <Alert
+            severity="success"
+            action={
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => setSuccess(false)}
+              >
+                X
+              </Button>
+            }
+            sx={{
+              position: "fixed",
+              bottom: "2%",
+              right: "2%",
+            }}
+          >
+            <AlertTitle>Email Validated </AlertTitle>
+            Thank You For Validating — We'll Reply To You Shortly Through Email!
+          </Alert>
+        )}
       </Container>
     </>
   );
 };
 
-export default Login;
+export default EmailValidation;
 
 const Container = styled(Box)`
   position: relative;
   height: 100vh;
   width: 100vw;
+  background-color: #fff;
   background: rgb(2, 0, 36);
   /* background: linear-gradient(90deg, rgba(2,0,36,0.8100490196078431) 0%, rgba(0,212,255,1) 50%, rgba(2,0,36,0.8128501400560224) 100%); */
 
@@ -230,9 +268,6 @@ const Container = styled(Box)`
     margin-top: 30px;
     background-color: #fff;
   }
-  button {
-  }
-
   .bottomText {
     font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
     font-size: 14px;

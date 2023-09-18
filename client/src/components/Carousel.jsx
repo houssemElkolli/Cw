@@ -1,120 +1,39 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-import ReplayIcon from '@mui/icons-material/Replay';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import MusicOffIcon from '@mui/icons-material/MusicOff';
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import tw from "../assets/images/test.jpg"
-
-
-import { EffectCoverflow, Pagination } from "swiper";
+import tw from "../assets/images/test.jpg";
+import axios from "../api/axios";
+import CircleIcon from "@mui/icons-material/Circle";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
-import { useDispatch } from "react-redux";
-import { toggleModel } from "../state/authSlice"
+import CarouselItem from "./CarouselItem";
 
-const Carousel = ({ carouselItems, setCarouselItems }) => {
-    const [loaded, setLoaded] = useState(false)
-    const dispatch = useDispatch()
+const Carousel = ({ totalNumber }) => {
+    const [carouselItems, setCarouselItems] = useState([]);
+    const [itemNumber, setItemNumber] = useState(0);
 
-    useState(()=> {
-        setLoaded(true)
+    useEffect(() => {
+        axios
+            .get(
+                `/carousel/getCarouselItem?itemNumber=${itemNumber}`
+            )
+            .then((res) => {
+                console.log(res.data);
+                setCarouselItems(res.data.carouselItems[0]);
+            });
+    }, [itemNumber]);
 
-    }, [])
-
-    const pagination = {
-        clickable: true,
-        // renderBullet: function (index, className) {
-        //   return '<span class="' + className + '">' + (index + 1) + "</span>";
-        // },
+    const nextItem = () => {
+        if (itemNumber < totalNumber - 1) {
+            setItemNumber((itemNumber) => itemNumber + 1);
+            console.log(itemNumber);
+        }
     };
-
-    const handelClick = (id) => {
-        const vid = document.getElementById(`${id}`)
-        if (vid.paused) {
-            vid.play()
-            const items = carouselItems.map(item => {
-                if (item._id === id) {
-                    item.video = true
-                }
-                return item;
-            })
-            console.log(items);
-            setCarouselItems(items)
-
-        } else {
-            vid.pause()
-            const items = carouselItems.map(item => {
-                if (item._id === id) {
-                    item.video = false
-                }
-                return item;
-            })
-            console.log(items);
-
-            setCarouselItems(items)
+    const previousItem = () => {
+        if (itemNumber > 0) {
+            setItemNumber((itemNumber) => itemNumber - 1);
+            console.log(itemNumber);
         }
-    }
-    const handelReset = (id) => {
-        const vid = document.getElementById(`${id}`)
-        if (vid.paused) {
-            const items = carouselItems.map(item => {
-                if (item._id === id) {
-                    item.video = true
-                }
-                return item;
-            })
-            setCarouselItems(items)
-            vid.pause();
-            vid.currentTime = 0;
-            vid.play();
-        }
-        vid.pause();
-        vid.currentTime = 0;
-        vid.play();
-    }
-    const handelSound = (id) => {
-        const vid = document.getElementById(`${id}`)
-        if (vid.muted) {
-            vid.muted = false;
-            const items = carouselItems.map(item => {
-                if (item._id === id && item.type === 'v') {
-                    item.sound = true
-                }
-                else {
-                    if (item.type === 'v') {
-                        const vid2 = document.getElementById(`${item._id}`)
-                        vid2.muted = true;
-                        item.sound = false
-
-                    }
-                }
-                return item;
-            })
-            console.log(items);
-            setCarouselItems(items)
-        } else {
-            vid.muted = true;
-            const items = carouselItems.map(item => {
-                if (item._id === id) {
-                    item.sound = false
-                }
-                return item;
-            })
-            setCarouselItems(items)
-        }
-
-
-
-    }
-
+    };
 
     return (
         <>
@@ -122,137 +41,184 @@ const Carousel = ({ carouselItems, setCarouselItems }) => {
                 <div>
                     <img src={tw} alt="" className="imageee" />
                 </div>
-
-                {loaded && 
-                <Swiper
-                    effect={"coverflow"}
-                    grabCursor={true}
-                    centeredSlides={true}
-                    slidesPerView={"auto"}
-                    coverflowEffect={{
-                        rotate: 100,
-                        stretch: 0,
-                        depth: 100,
-                        modifier: 1,
-                        slideShadows: true,
-                    }}
-                    pagination={pagination}
-                    modules={[EffectCoverflow, Pagination]}
-                    className="mySwiper"
-                >
-                    {
-                        (carouselItems || []).map((s) =>
-
-                            <SwiperSlide onClick={() => dispatch(toggleModel({ model: false }))} key={s._id} >
-                                {s.type === 'i' &&
-                                
-                                    <img src={`http://localhost:3001/assets/${s.picturePath}`} alt={s.alt} />
+                <CarouselItem
+                    carouselItems={carouselItems}
+                    setCarouselItems={setCarouselItems}
+                    nextItem={nextItem}
+                    previousItem={previousItem}
+                />
+                <div className="paginationBulletContainer">
+                    {Array(totalNumber)
+                        .fill(0)
+                        .map((s, index) => (
+                            <span
+                                onClick={() => {
+                                    console.log(index);
+                                    setItemNumber(index);
+                                }}
+                                key={index}
+                                className={
+                                    "swiper-pagination-bullet " +
+                                    (itemNumber === index ? "active" : "")
                                 }
-                                {s.type === 'v' &&
-                                    <>
-                                        <video autoPlay muted loop id={`${s._id}`}  >
-                                            <source src={`http://localhost:3001/assets/${s.picturePath}`} />
-                                        </video>
-                                        {s.video
-                                            ?
-                                            <PauseIcon className="playbutton" onClick={() => { handelClick(s._id) }} />
-                                            : <PlayArrowIcon className="playbutton" onClick={() => { handelClick(s._id) }} />
-                                        }
-                                        {s.sound
-                                            ?
-                                            <MusicNoteIcon className="soundbutton" onClick={() => { handelSound(s._id) }} />
-                                            : <MusicOffIcon className="soundbutton" onClick={() => { handelSound(s._id) }} />
-                                        }
-                                        <ReplayIcon className="resetbutton" onClick={() => { handelReset(s._id) }} />
-                                    </>
-                                }
-                            </SwiperSlide>
-
-                        )
-                    }
-                </Swiper>
-                }
+                            >
+                                {index + 1}
+                            </span>
+                        ))}
+                </div>
             </Container>
         </>
-    )
-}
+    );
+};
 
-export default Carousel
+export default Carousel;
 
 const Container = styled(Box)`
+    overflow-y: hidden;
 
-@media screen and (orientation:portrait)
-{
-    .mySwiper
-   {
-      display: none;
-   }
-   .imageee {
-        display : block;
-        height :100vh ;
-        width :100% ;
-        background-size: cover ;
-        overflow : hidden ;
+    @media screen and (orientation: portrait) {
+        .mySwiper {
+            display: none;
+        }
+        .imageee {
+            display: block;
+            height: 100vh;
+            width: 100%;
+            background-size: cover;
+            overflow: hidden;
+            position: absolute;
+        }
+    }
+    @media screen and (orientation: landscape) {
+        .imageee {
+            display: none;
+        }
+    }
+    .paginationBulletContainer {
         position: absolute;
-   }
-}
-@media screen and (orientation:landscape)
-{
-   .imageee {
-    display : none;
-   }
-}
+        bottom: 0%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        z-index: 9999;
+        height: fit-content;
+        width: 200px;
+        overflow-x: auto;
 
+        ::-webkit-scrollbar {
+            /* width: 12px; */
+            height: 5px;
+            width: 50px;
+        }
+        ::-webkit-scrollbar-thumb:horizontal {
+            background-image: linear-gradient(to right, transparent, #327469);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    }
+    scrollbar-width: none;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    scroll-behavior: smooth;
+    /* .paginationBulletContainer::-webkit-scrollbar {
+        display: none;
+    } */
+    .swiper-pagination-bullet {
+        /* position: absolute;
+        bottom: 50%;
+        left: 50%; */
+        scale: 0.6;
+        border-radius: 50%;
+        background-color: black;
+        margin: 0 5px;
+        padding: 5px;
+        height: 25px;
+        min-width: 25px;
+        text-align: center;
+        z-index: 9999;
+        font-size: 12px;
+        color: #ddd;
+        opacity: 1;
+        transition: all ease-in-out 0.2s;
+        cursor: pointer;
+    }
 
-.swiper-pagination-bullet {
-  text-align: center;
-  font-size: 12px;
-  color: #000;
-  opacity: 1;
-  background:rgb(50, 116, 105);
-  &:hover {
-    width: 20px;
-    height: 20px;
-  }
-}
+    .swiper-pagination-bullet:hover {
+        transform: translateY(-3px);
+        scale: 0.8;
+        background-color: rgb(50, 116, 105);
+    }
+    .active {
+        transform: translateY(-3px);
+        scale: 0.8;
+        background-color: rgb(50, 116, 105);
+    }
 
-.swiper-pagination-bullet-active {
-  color: #fff;
-  background: #007aff;
-}
-
-.playbutton {
-    z-index: 9999;
-    position: absolute;
-    right: 1%;
-    top : 3%;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-
-
-}
-.resetbutton{
-    z-index: 9999;
-    position: absolute;
-    right: 1%;
-    top : 8%;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-   
-}
-.soundbutton{
-    z-index: 9999;
-    position: absolute;
-    right: 1%;
-    top : 13%;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-}
-
-`
+    .playbutton {
+        z-index: 9999;
+        position: absolute;
+        right: 1%;
+        top: 13%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
+    .resetbutton {
+        z-index: 9999;
+        position: absolute;
+        right: 1%;
+        top: 18%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
+    .soundbutton {
+        z-index: 9999;
+        position: absolute;
+        right: 1%;
+        top: 23%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
+    .nextbutton {
+        z-index: 9999;
+        position: absolute;
+        right: 1%;
+        top: 3%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
+    .prevbutton {
+        z-index: 9999;
+        position: absolute;
+        right: 0.8%;
+        top: 8%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
+`;

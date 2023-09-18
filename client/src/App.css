@@ -4,38 +4,30 @@
   box-sizing: border-box;
 }
 
-.swiper {
-  width: 100%;
-}
+
 
 .swiper-slide {
-  background-position: center;
-  background-size: cover;
-  width: 300px;
-  height: 300px;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
 }
 
 .swiper-slide img {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 .swiper-slide video {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 video {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   -o-object-fit: cover;
   object-fit: cover;
   pointer-events: none;
 }
 
-.mySwiper {
-  max-height: 100vh;
-  width: 100vw;
-  margin: 0;
-}
 
 
 .blue-btn {

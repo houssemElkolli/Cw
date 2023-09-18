@@ -2,13 +2,17 @@ import { Box, TextField, Typography, styled } from '@mui/material'
 import { Formik } from 'formik'
 import { useRef, useState } from 'react'
 import * as Yup from 'yup'
-import axios from 'axios'
+import axios from "../api/axios";
 import SponsorTable from  '../components/SponsorTable'
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+
 
 
 const CarouselSettings = () => {
+  const axiosPrivate = useAxiosPrivate()
   const [fileArray, setFileArray] = useState([])
   const [UpdateTime, setUpdateTime] = useState(false)
+  const [itemToUpdate, setItemToUpdate] = useState(false)
   const [rld, setRld] = useState(false)
 
 
@@ -38,9 +42,27 @@ const CarouselSettings = () => {
     for (let value in data) {
       formData.append(value, data[value]);
     }
-    formData.append('picturePath', data.picture.name)
 
-    axios.post("http://localhost:3001/sponsors/addItem", formData)
+    axiosPrivate.post("/sponsors/addItem", formData)
+      .then((res) => {
+        console.log(res.data);
+        onSubmitProps.resetForm()
+        setFileArray([])
+        setRld(!rld)
+      }).catch((err) => {
+        console.log(err);
+      })
+
+  }
+  const handleFormUpdate = (data, onSubmitProps) => {
+
+    const formData = new FormData
+
+    for (let value in data) {
+      formData.append(value, data[value]);
+    }
+
+    axiosPrivate.post("/sponsors/updateSponsor", formData)
       .then((res) => {
         console.log(res.data);
         onSubmitProps.resetForm()
@@ -55,9 +77,9 @@ const CarouselSettings = () => {
     <Container>
       <section className='left-side'>
         <Formik
-          onSubmit={handleFormSubmit}
+          onSubmit={UpdateTime  ? handleFormUpdate :handleFormSubmit}
           validationSchema={validationSchema}
-          initialValues={initialValues}
+          initialValues={UpdateTime ? itemToUpdate : initialValues}
           enableReinitialize
         >
           {({
@@ -88,7 +110,7 @@ const CarouselSettings = () => {
                   }}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.alt}
+                  value={values.name}
                   error={Boolean(touched.name) && Boolean(errors.name)}
                 />
                 <Box sx={{ gridColumn: "span 4", margin: '5px auto', }}>
@@ -116,7 +138,7 @@ const CarouselSettings = () => {
         </Formik>
       </section>
       <section className='right-side'>
-        <SponsorTable rld={rld} />
+        <SponsorTable rld={rld} setUpdateTime={setUpdateTime}  setItemToUpdate={setItemToUpdate} />
       </section>
     </Container >
   )

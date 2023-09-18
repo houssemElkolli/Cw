@@ -1,63 +1,90 @@
-import Contact from "../models/Contact.js"
+import Contact from "../models/Contact.js";
 
-import nodemailer from "nodemailer"
-
+import nodemailer from "nodemailer";
 
 export const getContacts = async (req, res) => {
+    console.log(req.query.pageNumber);
+    const pageNumber = req.query.pageNumber || 0;
+    const itemPerPage = 100;
 
     const contacts = await Contact.find({})
-    res.status(200).json({ contacts })
-}
-export const addContactForm = async (req, res) => {
+        .sort({ createdAt: -1 })
+        .limit(itemPerPage)
+        .skip(pageNumber * itemPerPage);
 
-    const { firstName, lastName, email, companyName, message } = req.body
+    res.status(200).json({ contacts });
+};
+
+export const getTotalNumber = async (req, res) => {
+    try {
+        const totalNumber = await Contact.find({}).count();
+        if (Number.isInteger(totalNumber / 100)) {
+            const numberOfPages = Math.floor(totalNumber / 100);
+            res.status(200).json({ numberOfPages, totalNumber });
+        } else {
+            const numberOfPages = Math.floor(totalNumber / 100) + 1;
+            res.status(200).json({ numberOfPages, totalNumber });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+export const addContactForm = async (req, res) => {
+    const { firstName, lastName, email, subject,phoneNumber, companyName, message } =
+        req.body;
 
     const contact = new Contact({
         firstName,
         lastName,
         email,
+        subject,
+        phoneNumber,
         companyName,
         message,
-        code: Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000
-    })
+        code: Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000,
+    });
     const savedContact = await contact.save();
 
     var transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
+        host: "smtp.gmail.com",
         port: 465,
         secure: true,
         auth: {
             user: process.env.USER,
-            pass: process.env.PASS
-        }
+            pass: process.env.PASS,
+        },
     });
     var secondeTransporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-          user: process.env.USER,
-          pass: process.env.PASS
-      }
-  });
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.USER,
+            pass: process.env.PASS,
+        },
+    });
     var mailOptions = {
-        from: process.env.FROM,// sender address
+        from: process.env.FROM, // sender address
         to: process.env.TO, // list of receivers
-        subject: `The following email adress ${email} is trying to contact you `, // Subject line
+        subject: `${subject}`, // Subject line
         html: `
         <div style="padding:10px;border-style: ridge">
         <p>You have a new contact request.</p>
         <h3>Contact Details</h3>
         <ul>
+            <li>Email: ${firstName} </li>
+            <li>Email: ${lastName} </li>
             <li>Email: ${email} </li>
+            <li>Email: ${phoneNumber} </li>
+            <li>Email: ${companyName} </li>
             <li>Message: ${message} </li>
         </ul>
-        `
+        `,
     };
     var secondeMailOptions = {
-        from: process.env.FROM,// sender address
+        from: process.env.FROM, // sender address
         to: email, // list of receivers
-        subject: 'Email Verfication ', // Subject line
+        subject: "Email Verfication ", // Subject line
         html: `
         <!DOCTYPE html>
 <html>
@@ -183,7 +210,9 @@ export const addContactForm = async (req, res) => {
                     <table border="0" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-                          <a href="https://www.blogdesire.com" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Redirect</a>
+                          <a href="http://localhost:5173/emailValidation" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Redirect</a>
+                          // <a href="https://www.blogdesire.com" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Redirect</a>
+
                         </td>
                       </tr>
                     </table>
@@ -195,7 +224,7 @@ export const addContactForm = async (req, res) => {
           <tr>
             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
               <p style="margin: 0;">If the button didn't work, please copy and paste the following link in your browser:</p>
-              <p style="margin: 0;"><a href="https://blogdesire.com" target="_blank">https://localhost:5173/emailVerification</a></p>
+              <p style="margin: 0;"><a href="http://localhost:5173/emailValidation" target="_blank">http://localhost:5173/emailValidation</a></p>
             </td>
           </tr>
           <tr>
@@ -226,42 +255,70 @@ export const addContactForm = async (req, res) => {
   </table>
 </body>
 </html>
-        `
+        `,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.log('Email Sent Successfully');
-        }
-        else {
-            console.log('Email Sent Unsuccessfully');
+            console.log("Email Sent Successfully");
+        } else {
+            console.log("Email Sent Unsuccessfully");
 
             // res.json({ status: true, respMesg: 'Email Sent Successfully' })
         }
+    });
 
-    })
-    
     secondeTransporter.sendMail(secondeMailOptions, function (error, info) {
-      if (error) {
-          console.log('Email Sent Successfully');
-      }
-      else {
-          console.log('Email Sent Unsuccessfully');
+        if (error) {
+            console.log("Email Sent Successfully");
+        } else {
+            console.log("Email Sent Unsuccessfully");
 
-          // res.json({ status: true, respMesg: 'Email Sent Successfully' })
-      }
+            // res.json({ status: true, respMesg: 'Email Sent Successfully' })
+        }
+    });
 
-  })
-    res.status(200).json({ email })
-}
+    for (let i = 0; i < 120; i++) {
+        const holla = new Contact({
+            firstName : `houssem${i}`,
+            lastName :`houssem${i}`,
+            email : `houssem${i}@mail.com`,
+            subject: 'houssem${i}',
+            companyName : ``,
+            message : `houssem${i}`,
+            code: 333333,
+        });
+        await holla.save();
+    }
+    res.status(200).json({ email });
+};
+
+export const validateEmail = async (req, res) => {
+    try {
+        const { email, code } = req.body;
+
+        const contactFound = await Contact.updateOne(
+            { email, verified: false, code },
+            { $set: { verified: true } }
+        );
+        if (contactFound.modifiedCount > 0) {
+            res.status(200).json({ contactFound });
+        } else {
+            res.status(403).json({ message: "somthing went wrong" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+};
 
 export const deleteContact = async (req, res) => {
     try {
-        const items = req.body
-        const contactItems = await Contact.deleteMany({ _id: { $in: [...items] } })
-        res.status(200).json({ contactItems })
+        const items = req.body;
+        const contactItems = await Contact.deleteMany({
+            _id: { $in: [...items] },
+        });
+        res.status(200).json({ contactItems });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-
-}
+};

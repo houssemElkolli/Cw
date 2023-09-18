@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 
 const UseOnClickOutSide = (ref, handler) => {
     useEffect(() => {
@@ -10,16 +10,13 @@ const UseOnClickOutSide = (ref, handler) => {
         };
         document.addEventListener("mousedown", listener);
         document.addEventListener("touchstart", listener);
-        
+
         return () => {
             document.removeEventListener("mousedown", listener);
             document.removeEventListener("touchstart", listener);
-          };
+        };
+    }, [ref, handler]);
+    return <div>UseOnClickOutSide</div>;
+};
 
-    }, [ref, handler])
-    return (
-        <div>UseOnClickOutSide</div>
-    )
-}
-
-export default UseOnClickOutSide
+export default UseOnClickOutSide;

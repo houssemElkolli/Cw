@@ -8,6 +8,7 @@ import { useRef, useState } from "react";
 import * as Yup from "yup";
 import CarouselTable from "../components/CarouselTable";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import axios from "../api/axios";
 
 const CarouselSettings = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -46,10 +47,8 @@ const CarouselSettings = () => {
             formData.append(value, data[value]);
         }
 
-        axiosPrivate
-            .post("/carousel/addItem", formData, {
-                headers: { "content-type": "multipart/form-data" },
-            })
+        axios
+            .post("/carousel/addItem", formData)
             .then((res) => {
                 console.log(res.data);
                 onSubmitProps.resetForm();

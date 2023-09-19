@@ -53,7 +53,7 @@ export const storage = multer.diskStorage({
 });
 export const upload = multer({ storage });
 
-app.post("/carousel/addItem", [upload.single("picture"), verifyToken], addItem);
+app.post("/carousel/addItem", [upload.single("picture")], addItem);
 app.post("/carousel/updateItem",[upload.single("picture"), verifyToken], updateItem);
 app.post("/partners/addItem", [upload.single("picture"), verifyToken], addPartner);
 app.post("/partners/updatePartner", [upload.single("picture"), verifyToken], updatePartner);

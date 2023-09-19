@@ -7,6 +7,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { toggleModel } from "../state/authSlice"
 import { useDispatch } from "react-redux";
+import { BASE_URL } from '../api/axios'
 
 
 
@@ -53,7 +54,7 @@ const CarouselItem = ({ carouselItems, setCarouselItems, nextItem , previousItem
             onClick={() => dispatch(toggleModel({ model: false }))} key={carouselItems._id} >
             {carouselItems.type === 'i' &&
                 <>
-                    <img src={`http://localhost:3001/assets/${carouselItems.picturePath}`} alt={carouselItems.alt} />
+                    <img src={`${BASE_URL}/assets/${carouselItems.picturePath}`} alt={carouselItems.alt} />
                     <ArrowForwardIosIcon className="nextbutton" onClick={() => { nextItem() }} />
                     <ArrowBackIosIcon className="prevbutton" onClick={() => { previousItem() }} />
                 </>
@@ -62,7 +63,7 @@ const CarouselItem = ({ carouselItems, setCarouselItems, nextItem , previousItem
             {carouselItems.type === 'v' &&
                 <>
                     <video autoPlay muted loop id={`${carouselItems._id}`} >
-                        <source src={`http://localhost:3001/carousel/streamingVideos/${carouselItems.picturePath}`} />
+                        <source src={`${BASE_URL}/carousel/streamingVideos/${carouselItems.picturePath}`} />
                     </video>
                     {carouselItems.video
                         ?

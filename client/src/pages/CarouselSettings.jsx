@@ -24,7 +24,7 @@ const CarouselSettings = () => {
         alt: "",
         picture: null,
         type: "",
-        order: '',
+        order: "",
     };
 
     const uploadMultipleFiles = (e) => {
@@ -39,6 +39,7 @@ const CarouselSettings = () => {
     });
 
     const handleFormSubmit = (data, onSubmitProps) => {
+        console.log(data);
         const formData = new FormData();
 
         for (let value in data) {
@@ -46,7 +47,9 @@ const CarouselSettings = () => {
         }
 
         axiosPrivate
-            .post("/carousel/addItem", formData)
+            .post("/carousel/addItem", formData, {
+                headers: { "content-type": "multipart/form-data" },
+            })
             .then((res) => {
                 console.log(res.data);
                 onSubmitProps.resetForm();
@@ -85,7 +88,7 @@ const CarouselSettings = () => {
                     onSubmit={UpdateTime ? handleFormUpdate : handleFormSubmit}
                     validationSchema={validationSchema}
                     initialValues={UpdateTime ? itemToUpdate : initialValues}
-                    enableReinitialize
+                    enableReinitialize    
                 >
                     {({
                         values,

@@ -5,6 +5,8 @@ import { fileURLToPath } from "url";
 
 export const addItem = async (req, res) => {
     try {
+        console.log(req.file);
+        console.log(req.file.filename);
         const { alt, type, order } = req.body;
         const picturePath = req.file.filename;
         if (order) {

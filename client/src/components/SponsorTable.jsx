@@ -26,7 +26,7 @@ import { visuallyHidden } from "@mui/utils";
 import Collapse from "@mui/material/Collapse";
 import ImageListItem from "@mui/material/ImageListItem";
 
-import axios from "../api/axios";
+import {BASE_URL} from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function descendingComparator(a, b, orderBy) {
@@ -424,7 +424,7 @@ export default function SponsorsTable({ rld, setUpdateTime, setItemToUpdate }) {
                                                             }}
                                                         >
                                                             <img
-                                                                src={`http://localhost:3001/assets/${row.picturePath}`}
+                                                                src={`${BASE_URL}/assets/${row.picturePath}`}
                                                                 alt={
                                                                     row.picturePath
                                                                 }

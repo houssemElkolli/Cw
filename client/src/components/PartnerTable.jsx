@@ -26,7 +26,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-import axios from "../api/axios";
+import {BASE_URL} from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function descendingComparator(a, b, orderBy) {
@@ -425,7 +425,7 @@ export default function PartnersTable({ rld, setItemToUpdate, setUpdateTime }) {
                                                             }}
                                                         >
                                                             <img
-                                                                src={`http://localhost:3001/assets/${row.picturePath}`}
+                                                                src={`${BASE_URL}/assets/${row.picturePath}`}
                                                                 alt={
                                                                     row.picturePath
                                                                 }

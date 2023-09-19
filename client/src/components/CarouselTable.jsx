@@ -26,7 +26,7 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-import axios from "../api/axios";
+import { BASE_URL } from "../api/axios";
 import { Collapse, ImageListItem } from "@mui/material";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
@@ -269,27 +269,33 @@ export default function UsersTable({ rld, setUpdateTime, setItemToUpdate }) {
 
     const deleteSlectedItems = () => {
         console.log(selected);
-        axiosPrivate.post("/carousel/deleteCarouselItems", selected).then((res) => {
-            console.log(res);
-            setDeleteRLod(!deleteRLod);
-            setSelected([]);
-        });
+        axiosPrivate
+            .post("/carousel/deleteCarouselItems", selected)
+            .then((res) => {
+                console.log(res);
+                setDeleteRLod(!deleteRLod);
+                setSelected([]);
+            });
     };
     const swapCarouselItems = () => {
         console.log(selected);
-        axiosPrivate.post("/carousel/swapCarouselItems", selected).then((res) => {
-            console.log(res);
-            setDeleteRLod(!deleteRLod);
-            setSelected([]);
-        });
+        axiosPrivate
+            .post("/carousel/swapCarouselItems", selected)
+            .then((res) => {
+                console.log(res);
+                setDeleteRLod(!deleteRLod);
+                setSelected([]);
+            });
     };
     const revertItemsOrder = () => {
         console.log(selected);
-        axiosPrivate.post("/carousel/revertItemsOrder", selected).then((res) => {
-            console.log(res);
-            setDeleteRLod(!deleteRLod);
-            setSelected([]);
-        });
+        axiosPrivate
+            .post("/carousel/revertItemsOrder", selected)
+            .then((res) => {
+                console.log(res);
+                setDeleteRLod(!deleteRLod);
+                setSelected([]);
+            });
     };
 
     const handleRequestSort = (event, property) => {
@@ -481,7 +487,7 @@ export default function UsersTable({ rld, setUpdateTime, setItemToUpdate }) {
                                                             {row.type ===
                                                                 "i" && (
                                                                 <img
-                                                                    src={`http://localhost:3001/assets/${row.picturePath}`}
+                                                                    src={`${BASE_URL}/assets/${row.picturePath}`}
                                                                     alt={
                                                                         row.picturePath
                                                                     }
@@ -501,7 +507,7 @@ export default function UsersTable({ rld, setUpdateTime, setItemToUpdate }) {
                                                                     id={`${row._id}`}
                                                                 >
                                                                     <source
-                                                                        src={`http://localhost:3001/carousel/streamingVideos/${row.picturePath}`}
+                                                                        src={`${BASE_URL}/carousel/streamingVideos/${row.picturePath}`}
                                                                     />
                                                                 </video>
                                                             )}

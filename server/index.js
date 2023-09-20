@@ -57,8 +57,6 @@ app.post("/carousel/addItem", [upload.single("picture")], addItem);
 app.post("/carousel/updateItem",[upload.single("picture"), verifyToken], updateItem);
 app.post("/partners/addItem", [upload.single("picture"), verifyToken], addPartner);
 app.post("/partners/updatePartner", [upload.single("picture"), verifyToken], updatePartner);
-app.post("/sponsors/addItem", [upload.single("picture"), verifyToken], addSponsor);
-app.post("/sponsors/updateSponsor", [upload.single("picture"), verifyToken], updateSponsor);
 
 // Routes
 app.use("/auth", authRoutes);

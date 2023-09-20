@@ -21,12 +21,12 @@ router.get("/getSponsors", getSponsors);
 //protected Routes
 router.use(verifyToken);
 router.post(
-    "/sponsors/addItem",
+    "/addItem",
     [upload.single("picture"), verifyToken],
     addSponsor
 );
 router.post(
-    "/sponsors/updateSponsor",
+    "/updateSponsor",
     [upload.single("picture"), verifyToken],
     updateSponsor
 );

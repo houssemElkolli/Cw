@@ -3,7 +3,7 @@ import logo from "../assets/logos/picto-noir.png";
 
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";

@@ -22,12 +22,12 @@ router.get("/getSponsors", getSponsors);
 router.use(verifyToken);
 router.post(
     "/addItem",
-    [upload.single("picture"), verifyToken],
+    [upload.single("picture")],
     addSponsor
 );
 router.post(
     "/updateSponsor",
-    [upload.single("picture"), verifyToken],
+    [upload.single("picture")],
     updateSponsor
 );
 router.post("/deleteSponsor", deleteSponsor);

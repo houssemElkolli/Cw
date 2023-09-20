@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteSponsor, getSponsors } from "../controllers/sponsor.js";
+import { addSponsor, deleteSponsor, getSponsors, updateSponsor } from "../controllers/sponsor.js";
 import verifyToken from "../middleware/auth.js";
 import multer from "multer";
 

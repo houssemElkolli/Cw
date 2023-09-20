@@ -4,11 +4,13 @@ import logo from "../assets/logos/picto-noir.png";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 import { NavLink } from "react-router-dom";
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { useSelector } from "react-redux";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const Navbar = () => {
     const user = useSelector((state) => state.auth.user);
+    const axiosPrivate = useAxiosPrivate();
     const [lod, setLod] = useState(false);
     useEffect(() => {
         setLod(true);
@@ -40,7 +42,9 @@ const Navbar = () => {
                                     href="#menu"
                                     title="Show navigation"
                                 >
-                                    <MenuRoundedIcon sx={{ fontSize: "28px" }} />
+                                    <MenuRoundedIcon
+                                        sx={{ fontSize: "28px" }}
+                                    />
                                     {/* MENU */}
                                 </a>
                                 <a
@@ -56,9 +60,25 @@ const Navbar = () => {
                                 {/* <li className="menu-item">
                                     <NavLink to="/work">Work</NavLink>
                                 </li> */}
-                                <li className="menu-item">
-                                    <NavLink to="/l">login</NavLink>
-                                </li>
+
+                                {user?.email ? (
+                                    <li className="menu-item">
+                                        <NavLink
+                                            to="/"
+                                            onClick={() =>
+                                                axiosPrivate.post(
+                                                    "/auth/logout"
+                                                )
+                                            }
+                                        >
+                                            logout
+                                        </NavLink>
+                                    </li>
+                                ) : (
+                                    <li className="menu-item">
+                                        <NavLink to="/l">login</NavLink>
+                                    </li>
+                                )}
                                 <li className="menu-item">
                                     <NavLink to="/partners">Partners</NavLink>
                                 </li>
@@ -71,7 +91,7 @@ const Navbar = () => {
                                 <li className="menu-item">
                                     <NavLink to="/">Home</NavLink>
                                 </li>
-                                {user?.role === ('superAdmin' || 'admin') && (
+                                {user?.role === ("superAdmin" || "admin") && (
                                     <li className="menu-item">
                                         <NavLink to="/dashboard/carousel">
                                             DB

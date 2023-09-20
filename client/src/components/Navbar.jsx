@@ -5,11 +5,13 @@ import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 import { NavLink } from "react-router-dom";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { setLogout } from "../state/authSlice";
 
 const Navbar = () => {
     const user = useSelector((state) => state.auth.user);
+    const dispatch = useDispatch();
     const axiosPrivate = useAxiosPrivate();
     const [lod, setLod] = useState(false);
     useEffect(() => {
@@ -65,11 +67,12 @@ const Navbar = () => {
                                     <li className="menu-item">
                                         <NavLink
                                             to="/"
-                                            onClick={() =>
+                                            onClick={() => {
                                                 axiosPrivate.post(
                                                     "/auth/logout"
-                                                )
-                                            }
+                                                );
+                                                dispatch(setLogout());
+                                            }}
                                         >
                                             logout
                                         </NavLink>

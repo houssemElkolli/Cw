@@ -15,8 +15,8 @@ const CarouselSettings = () => {
     const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 
     const initialValues = {
-        name: '',
-        picture: '',
+        name: "",
+        picture: "",
     };
 
     const uploadMultipleFiles = (e) => {
@@ -37,7 +37,9 @@ const CarouselSettings = () => {
         formData.append("picturePath", data.picture.name);
 
         axios
-            .post("/partners/addItem", formData)
+            .post("/partners/addItem", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            })
             .then((res) => {
                 console.log(res.data);
                 onSubmitProps.resetForm();

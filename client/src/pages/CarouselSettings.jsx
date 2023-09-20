@@ -47,7 +47,7 @@ const CarouselSettings = () => {
             formData.append(value, data[value]);
         }
 
-        axios
+        axiosPrivate
             .post("/carousel/addItem", formData)
             .then((res) => {
                 console.log(res.data);

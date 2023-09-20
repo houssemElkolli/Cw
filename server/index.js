@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
@@ -18,10 +17,7 @@ import carouselRoutes from "./routes/carousel.js";
 import sponsorRoutes from "./routes/sponsor.js";
 import partnerRoutes from "./routes/partner.js";
 import contactRoutes from "./routes/contact.js";
-import { addItem, updateItem } from "./controllers/carousel.js";
-import { addPartner, updatePartner } from "./controllers/partner.js";
-import { addSponsor, updateSponsor } from "./controllers/sponsor.js";
-import verifyToken from "./middleware/auth.js";
+
 
 /* config */
 
@@ -42,21 +38,19 @@ app.use(cors(corsOptions));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 /* File Storage*/
-export const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "public/assets");
-    },
-    filename: function (req, file, cb) {
-        const ext = file.mimetype.split("/")[1];
-        cb(null, `${Date.now()}_${file.originalname}`);
-    },
-});
-export const upload = multer({ storage });
+// export const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, "public/assets");
+//     },
+//     filename: function (req, file, cb) {
+//         const ext = file.mimetype.split("/")[1];
+//         cb(null, `${Date.now()}_${file.originalname}`);
+//     },
+// });
+// export const upload = multer({ storage });
 
-app.post("/carousel/addItem", [upload.single("picture")], addItem);
-app.post("/carousel/updateItem",[upload.single("picture"), verifyToken], updateItem);
-app.post("/partners/addItem", [upload.single("picture"), verifyToken], addPartner);
-app.post("/partners/updatePartner", [upload.single("picture"), verifyToken], updatePartner);
+
+
 
 // Routes
 app.use("/auth", authRoutes);

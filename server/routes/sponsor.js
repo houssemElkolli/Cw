@@ -20,12 +20,12 @@ const upload = multer({ storage });
 router.get("/getSponsors", getSponsors);
 //protected Routes
 router.use(verifyToken);
-app.post(
+router.post(
     "/sponsors/addItem",
     [upload.single("picture"), verifyToken],
     addSponsor
 );
-app.post(
+router.post(
     "/sponsors/updateSponsor",
     [upload.single("picture"), verifyToken],
     updateSponsor

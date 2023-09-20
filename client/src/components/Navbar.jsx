@@ -65,7 +65,7 @@ const Navbar = () => {
 
                                 {user?.email ? (
                                     <li className="menu-item">
-                                        <NavLink
+                                        <Link
                                             to="/"
                                             onClick={() => {
                                                 axiosPrivate.post(
@@ -75,7 +75,7 @@ const Navbar = () => {
                                             }}
                                         >
                                             logout
-                                        </NavLink>
+                                        </Link>
                                     </li>
                                 ) : (
                                     <li className="menu-item">

@@ -1,5 +1,10 @@
 import express from "express";
-import { addSponsor, deleteSponsor, getSponsors, updateSponsor } from "../controllers/sponsor.js";
+import {
+    addSponsor,
+    deleteSponsor,
+    getSponsors,
+    updateSponsor,
+} from "../controllers/sponsor.js";
 import verifyToken from "../middleware/auth.js";
 import multer from "multer";
 
@@ -20,16 +25,8 @@ const upload = multer({ storage });
 router.get("/getSponsors", getSponsors);
 //protected Routes
 router.use(verifyToken);
-router.post(
-    "/addItem",
-    [upload.single("picture")],
-    addSponsor
-);
-router.post(
-    "/updateSponsor",
-    [upload.single("picture")],
-    updateSponsor
-);
+router.post("/addItem", [upload.single("picture")], addSponsor);
+router.post("/updateSponsor", [upload.single("picture")], updateSponsor);
 router.post("/deleteSponsor", deleteSponsor);
 
 export default router;

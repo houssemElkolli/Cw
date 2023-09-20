@@ -2,10 +2,11 @@ import { Box, TextField, Typography, styled } from "@mui/material";
 import { Formik } from "formik";
 import { useRef, useState } from "react";
 import * as Yup from "yup";
-import axios from "../api/axios";
 import PartnerTable from "../components/PartnerTable";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const CarouselSettings = () => {
+    const axiosPrivate = useAxiosPrivate()
     const [fileArray, setFileArray] = useState([]);
     const [UpdateTime, setUpdateTime] = useState(false);
     const [rld, setRld] = useState(false);
@@ -36,10 +37,8 @@ const CarouselSettings = () => {
         }
         formData.append("picturePath", data.picture.name);
 
-        axios
-            .post("/partners/addItem", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            })
+        axiosPrivate
+            .post("/partners/addItem", formData)
             .then((res) => {
                 console.log(res.data);
                 onSubmitProps.resetForm();
@@ -58,7 +57,7 @@ const CarouselSettings = () => {
             formData.append(value, data[value]);
         }
 
-        axios
+        axiosPrivate
             .post("/partners/updatePartner", formData)
             .then((res) => {
                 console.log(res.data);

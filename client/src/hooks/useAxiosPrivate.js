@@ -5,13 +5,14 @@ import { useSelector } from "react-redux";
 
 const useAxiosPrivate = () => {
     const accessToken = useSelector((state) => state.auth.accessToken);
+    const user = useSelector((state) => state.auth.user);
     const refresh = useRefreshToken();
 
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
             (config) => {
                 if (!config.headers["Authorization"]) {
-                    config.headers["Authorization"] = `Bearer ${accessToken}`;
+                    config.headers["Authorization"] = user?.email && `Bearer ${accessToken}`;
                 }
                 return config;
             },

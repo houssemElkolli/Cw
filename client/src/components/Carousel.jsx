@@ -73,6 +73,7 @@ const Carousel = ({ totalNumber }) => {
                                 onClick={() => {
                                     console.log(index);
                                     setItemNumber(index);
+                                    setIsLoading(true);
                                 }}
                                 key={index}
                                 className={

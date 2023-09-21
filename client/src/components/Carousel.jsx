@@ -125,11 +125,11 @@ const Container = styled(Box)`
         }
     }
     .phone {
-        height: 50px;
-        width: 100px;
+        height: 100px;
+        width: 50px;
         border: 3px solid white;
         border-radius: 10px;
-        animation: rotate 1.5s  infinite alternate ease-in;
+        animation: rotate 1.5s infinite alternate ease-in;
         /* display: none; */
     }
 
@@ -142,15 +142,15 @@ const Container = styled(Box)`
 
     @keyframes rotate {
         0% {
-            transform: rotate(0deg);
-            border: 3px solid rgb(0, 181, 54);
+            transform: rotate(-90deg);
+            border: 3px solid rgb(181, 21, 0);
         }
         50% {
             transform: rotate(-90deg);
         }
         100% {
-            transform: rotate(-90deg);
-            border: 3px solid rgb(181, 21, 0);
+            transform: rotate(0deg);
+            border: 3px solid rgb(0, 181, 54);
         }
     }
 

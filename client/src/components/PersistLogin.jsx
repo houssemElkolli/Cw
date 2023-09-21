@@ -33,7 +33,8 @@ const PersistLogin = () => {
             {isLoading ? (
                 <div className="container">
                     <div className="loudingSpin">
-                        <div class="lds-roller">
+                        <div class="lds-grid">
+                            <div></div>
                             <div></div>
                             <div></div>
                             <div></div>

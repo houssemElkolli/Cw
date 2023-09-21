@@ -98,16 +98,15 @@ const Container = styled(Box)`
             display: block;
             height: 100vh;
             width: 100%;
-            background-color:  rgb(2, 0, 36);
+            background-color: rgb(2, 0, 36);
             overflow: hidden;
             background-size: cover;
 
-
             .rotateContainer {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
             }
         }
     }

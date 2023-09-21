@@ -100,6 +100,8 @@ const Container = styled(Box)`
             width: 100%;
             background-color:  rgb(2, 0, 36);
             overflow: hidden;
+            background-size: cover;
+
 
             .rotateContainer {
                 position: absolute;
@@ -142,12 +144,12 @@ const Container = styled(Box)`
         }
     }
 
-    @media only screen and (max-device-width: 812px) and (orientation: landscape) {
+    /* @media only screen and (max-device-width: 812px) and (orientation: landscape) {
         .phone,
         .message {
             display: block;
         }
-    }
+    } */
     /* @media screen and (orientation: portrait) {
         .mySwiper {
             display: none;

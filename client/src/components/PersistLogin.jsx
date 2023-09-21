@@ -18,7 +18,9 @@ const PersistLogin = () => {
             }
         };
 
-        (typeof accessToekn !== String) ? verifyRefreshToken() : setIsLoading(false);
+        typeof accessToekn !== String
+            ? verifyRefreshToken()
+            : setIsLoading(false);
     });
 
     useEffect(() => {
@@ -26,7 +28,28 @@ const PersistLogin = () => {
         console.log(accessToekn);
     }, [isLoading]);
 
-    return <>{isLoading ? <p>is Loading</p> : <Outlet />}</>;
+    return (
+        <>
+            {isLoading ? (
+                <div className="container">
+                    <div className="loudingSpin">
+                        <div class="lds-roller">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <Outlet />
+            )}
+        </>
+    );
 };
 
 export default PersistLogin;

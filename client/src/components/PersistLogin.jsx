@@ -29,7 +29,7 @@ const PersistLogin = () => {
         console.log(accessToekn);
     }, [isLoading]);
 
-    return <>{isLoading ? <LoadingSpin /> : <Outlet />}</>;
+    return <>{isLoading ? '' : <Outlet />}</>;
 };
 
 export default PersistLogin;

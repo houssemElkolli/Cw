@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useRefreshToken from "../hooks/useRefreshToken";
 import { useSelector } from "react-redux";
+import LoadingSpin from './LoadingSpin'
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
@@ -28,29 +29,7 @@ const PersistLogin = () => {
         console.log(accessToekn);
     }, [isLoading]);
 
-    return (
-        <>
-            {isLoading ? (
-                <div className="loadingContainer">
-                    <div className="loudingSpin">
-                        <div class="lds-grid">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                </div>
-            ) : (
-                <Outlet />
-            )}
-        </>
-    );
+    return <>{isLoading ? <LoadingSpin /> : <Outlet />}</>;
 };
 
 export default PersistLogin;

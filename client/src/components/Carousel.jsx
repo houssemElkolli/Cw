@@ -6,6 +6,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 import CarouselItem from "./CarouselItem";
+import LoadingSpin from "./LoadingSpin";
 
 const Carousel = ({ totalNumber }) => {
     const [carouselItems, setCarouselItems] = useState([]);
@@ -13,9 +14,7 @@ const Carousel = ({ totalNumber }) => {
 
     useEffect(() => {
         axios
-            .get(
-                `/carousel/getCarouselItem?itemNumber=${itemNumber}`
-            )
+            .get(`/carousel/getCarouselItem?itemNumber=${itemNumber}`)
             .then((res) => {
                 console.log(res.data);
                 setCarouselItems(res.data.carouselItems[0]);
@@ -38,15 +37,26 @@ const Carousel = ({ totalNumber }) => {
     return (
         <>
             <Container className="carousel">
-                <div>
-                    <img src={tw} alt="" className="imageee" />
+                <div className="imageee">
+                    <div className="rotateContainer">
+                        <div class="phone"></div>
+                        <div class="message">Please rotate your device!</div>
+                    </div>
                 </div>
-                <CarouselItem
-                    carouselItems={carouselItems}
-                    setCarouselItems={setCarouselItems}
-                    nextItem={nextItem}
-                    previousItem={previousItem}
-                />
+                {/* <div>
+                    <img src={tw} alt="" className="imageee" />
+                </div> */}
+                {carouselItems.length > 0 ? (
+                    <CarouselItem
+                        carouselItems={carouselItems}
+                        setCarouselItems={setCarouselItems}
+                        nextItem={nextItem}
+                        previousItem={previousItem}
+                    />
+                ) : (
+                    <LoadingSpin />
+                )}
+
                 <div className="paginationBulletContainer">
                     {Array(totalNumber)
                         .fill(0)
@@ -83,6 +93,61 @@ const Container = styled(Box)`
         .imageee {
             display: block;
             height: 100vh;
+            width: 100wh;
+            .rotateContainer {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+    @media screen and (orientation: landscape) {
+        .imageee {
+            display: none;
+        }
+    }
+    .phone {
+        height: 50px;
+        width: 100px;
+        border: 3px solid white;
+        border-radius: 10px;
+        animation: rotate 1.5s ease-in-out infinite alternate;
+        /* display: none; */
+    }
+
+    .message {
+        color: white;
+        font-size: 1em;
+        margin-top: 40px;
+        /* display: none; */
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+        50% {
+            transform: rotate(-90deg);
+        }
+        100% {
+            transform: rotate(-90deg);
+        }
+    }
+
+    @media only screen and (max-device-width: 812px) and (orientation: landscape) {
+        .phone,
+        .message {
+            display: block;
+        }
+    }
+    /* @media screen and (orientation: portrait) {
+        .mySwiper {
+            display: none;
+        }
+        .imageee {
+            display: block;
+            height: 100vh;
             width: 100%;
             background-size: cover;
             overflow: hidden;
@@ -93,7 +158,7 @@ const Container = styled(Box)`
         .imageee {
             display: none;
         }
-    }
+    } */
     .paginationBulletContainer {
         position: absolute;
         bottom: 0%;

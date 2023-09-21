@@ -129,7 +129,7 @@ const Container = styled(Box)`
         width: 100px;
         border: 3px solid white;
         border-radius: 10px;
-        animation: rotate 1.5s  infinite alternate ease-out;
+        animation: rotate 1.5s  infinite alternate ease-in;
         /* display: none; */
     }
 

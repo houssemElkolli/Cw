@@ -67,7 +67,7 @@ video {
 }
 
 
-.container {
+.loadingContainer {
   height: 100vh;
   width: 100wh;
   background-color:  rgb(2, 0, 36);

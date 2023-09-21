@@ -31,7 +31,7 @@ const PersistLogin = () => {
     return (
         <>
             {isLoading ? (
-                <div className="container">
+                <div className="loadingContainer">
                     <div className="loudingSpin">
                         <div class="lds-grid">
                             <div></div>

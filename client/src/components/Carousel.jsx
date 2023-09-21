@@ -95,12 +95,17 @@ const Container = styled(Box)`
             display: none;
         }
         .imageee {
-            display: block;
+            /* display: block; */
             height: 100vh;
             width: 100%;
             background-color: rgb(2, 0, 36);
             overflow: hidden;
             background-size: cover;
+            position: absolute;
+            display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
 
             .rotateContainer {
                 display: flex;

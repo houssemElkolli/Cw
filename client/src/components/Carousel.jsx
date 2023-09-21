@@ -125,8 +125,8 @@ const Container = styled(Box)`
         }
     }
     .phone {
-        height: 100px;
-        width: 50px;
+        height: 50px;
+        width: 100px;
         border: 3px solid white;
         border-radius: 10px;
         animation: rotate 1.5s infinite alternate ease-in-out;

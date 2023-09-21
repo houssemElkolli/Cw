@@ -41,24 +41,28 @@ const Carousel = ({ totalNumber }) => {
     return (
         <>
             <Container className="carousel">
-                <div className="imageee">
-                    <div className="rotateContainer">
-                        <div class="phone"></div>
-                        <div class="message">Please rotate your device!</div>
-                    </div>
-                </div>
                 {/* <div>
                     <img src={tw} alt="" className="imageee" />
                 </div> */}
                 {isLoading ? (
                     <LoadingSpin />
                 ) : (
-                    <CarouselItem
-                        carouselItems={carouselItems}
-                        setCarouselItems={setCarouselItems}
-                        nextItem={nextItem}
-                        previousItem={previousItem}
-                    />
+                    <>
+                        <div className="imageee">
+                            <div className="rotateContainer">
+                                <div class="phone"></div>
+                                <div class="message">
+                                    Please rotate your device!
+                                </div>
+                            </div>
+                        </div>
+                        <CarouselItem
+                            carouselItems={carouselItems}
+                            setCarouselItems={setCarouselItems}
+                            nextItem={nextItem}
+                            previousItem={previousItem}
+                        />
+                    </>
                 )}
 
                 <div className="paginationBulletContainer">
@@ -103,9 +107,9 @@ const Container = styled(Box)`
             background-size: cover;
             position: absolute;
             display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
 
             .rotateContainer {
                 display: flex;
@@ -139,12 +143,15 @@ const Container = styled(Box)`
     @keyframes rotate {
         0% {
             transform: rotate(0deg);
+            border: 3px solid rgb(181, 21, 0);
+
         }
         50% {
             transform: rotate(-90deg);
         }
         100% {
             transform: rotate(-90deg);
+            border: 3px solid rgb(0, 181, 54);
         }
     }
 

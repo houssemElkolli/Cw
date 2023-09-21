@@ -11,6 +11,7 @@ import LoadingSpin from "./LoadingSpin";
 const Carousel = ({ totalNumber }) => {
     const [carouselItems, setCarouselItems] = useState([]);
     const [itemNumber, setItemNumber] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         axios
@@ -18,18 +19,21 @@ const Carousel = ({ totalNumber }) => {
             .then((res) => {
                 console.log(res.data);
                 setCarouselItems(res.data.carouselItems[0]);
+                setIsLoading(false);
             });
     }, [itemNumber]);
 
     const nextItem = () => {
         if (itemNumber < totalNumber - 1) {
             setItemNumber((itemNumber) => itemNumber + 1);
+            setIsLoading(true);
             console.log(itemNumber);
         }
     };
     const previousItem = () => {
         if (itemNumber > 0) {
             setItemNumber((itemNumber) => itemNumber - 1);
+            setIsLoading(true);
             console.log(itemNumber);
         }
     };
@@ -46,15 +50,15 @@ const Carousel = ({ totalNumber }) => {
                 {/* <div>
                     <img src={tw} alt="" className="imageee" />
                 </div> */}
-                {carouselItems.length > 0 ? (
+                {isLoading ? (
+                    <LoadingSpin />
+                ) : (
                     <CarouselItem
                         carouselItems={carouselItems}
                         setCarouselItems={setCarouselItems}
                         nextItem={nextItem}
                         previousItem={previousItem}
                     />
-                ) : (
-                    <LoadingSpin />
                 )}
 
                 <div className="paginationBulletContainer">
@@ -94,6 +98,7 @@ const Container = styled(Box)`
             display: block;
             height: 100vh;
             width: 100wh;
+            background-color:  rgb(2, 0, 36);
             .rotateContainer {
                 position: absolute;
                 top: 50%;

@@ -97,8 +97,10 @@ const Container = styled(Box)`
         .imageee {
             display: block;
             height: 100vh;
-            width: 100wh;
+            width: 100%;
             background-color:  rgb(2, 0, 36);
+            overflow: hidden;
+
             .rotateContainer {
                 position: absolute;
                 top: 50%;

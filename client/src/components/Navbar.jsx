@@ -300,7 +300,7 @@ const Container = styled(Box)`
         opacity: 0.7;
         a {
             color: #fff;
-            box-shadow: 0 0 3px 5px rgb(2, 253, 253);
+            box-shadow: 0 0 5px 8px rgb(2, 253, 253);
         }
     }
 

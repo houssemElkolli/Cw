@@ -139,7 +139,7 @@ const Container = styled(Box)`
         background-size: 100%;
         overflow: hidden;
         text-decoration: none;
-        background-color: rgb(0, 181, 184);
+        background-color: rgb(50, 116, 105);
         /* box-shadow: 0 0 1px 3px rgb(74, 141, 130); */
     }
 
@@ -231,7 +231,7 @@ const Container = styled(Box)`
         border: 2px solid beige;
         width: 75px;
         visibility: visible;
-        background-color: rgb(0, 181, 184);
+        background-color: rgb(50, 116, 105);
         box-shadow: 0 0 3px 5px rgb(74, 141, 130);
     }
     //Home
@@ -241,7 +241,7 @@ const Container = styled(Box)`
         border: 2px solid beige;
         width: 75px;
         visibility: visible;
-        background-color: rgb(0, 181, 184);
+        background-color: rgb(50, 116, 105);
         box-shadow: 0 0 3px 5px rgb(74, 141, 130);
     }
     //about
@@ -251,7 +251,7 @@ const Container = styled(Box)`
         border: 2px solid beige;
         width: 75px;
         visibility: visible;
-        background-color: rgb(0, 181, 184);
+        background-color: rgb(50, 116, 105);
         box-shadow: 0 0 3px 5px rgb(74, 141, 130);
     }
     /* team */
@@ -261,7 +261,7 @@ const Container = styled(Box)`
         border: 2px solid beige;
         width: 75px;
         visibility: visible;
-        background-color: rgb(0, 181, 184);
+        background-color: rgb(50, 116, 105);
         box-shadow: 0 0 3px 5px rgb(74, 141, 130);
     }
     /* parteners */
@@ -271,7 +271,7 @@ const Container = styled(Box)`
         border: 2px solid beige;
         width: 75px;
         visibility: visible;
-        background-color: rgb(0, 181, 184);
+        background-color: rgb(50, 116, 105);
         box-shadow: 0 0 3px 5px rgb(74, 141, 130);
     }
 
@@ -282,7 +282,7 @@ const Container = styled(Box)`
         border: 2px solid beige;
         width: 75px;
         visibility: visible;
-        background-color: rgb(0, 181, 184);
+        background-color: rgb(50, 116, 105);
         box-shadow: 0 0 3px 5px rgb(74, 141, 130);
     }
     /* login */
@@ -292,15 +292,15 @@ const Container = styled(Box)`
         border: 2px solid beige;
         width: 75px;
         visibility: hidden;
-        background-color: rgb(0, 181, 184);
-        box-shadow: 0 0 3px 5px rgb(61, 185, 187);
+        background-color: rgb(50, 116, 105);
+        box-shadow: 0 0 3px 5px rgb(74, 141, 130);
     }
 
     #menu:target > .menu-item:has(.active) {
         opacity: 0.7;
         a {
             color: #fff;
-            box-shadow: 0 0 5px 8px rgb(2, 253, 253);
+            box-shadow: 0 0 3px 5px rgb(2, 253, 253);
         }
     }
 

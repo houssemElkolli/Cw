@@ -188,7 +188,7 @@ const Contact = () => {
                                                     letterSpacing: "2px",
                                                     fontFamily:
                                                         "poppins, cursive",
-                                                    color: "rgb(50, 116, 105)",
+                                                    color: "rgb(0, 181, 184)",
                                                     padding: "10px 30px",
                                                     // borderRadius : "30px",
                                                     // backgroundImage: "linear-gradient(to right,  rgba(68, 129, 235, 0.753), rgba(68, 129, 235, 0.377), rgba(4, 192, 254, 0.767), rgb(63, 134, 237))",
@@ -288,7 +288,9 @@ const Contact = () => {
                                                 onChange={handleChange}
                                                 value={values.phoneNumber}
                                                 error={
-                                                    Boolean(touched.phoneNumber) &&
+                                                    Boolean(
+                                                        touched.phoneNumber
+                                                    ) &&
                                                     Boolean(errors.phoneNumber)
                                                 }
                                             />
@@ -392,7 +394,7 @@ const Container = styled(Box)`
         grid-gap: 10px 10px;
         padding: 10px 30px;
         padding-bottom: 30px;
-        border: 3px solid rgb(50, 116, 105);
+        border: 3px solid rgb(0, 181, 184);
     }
 
     .close-btn {
@@ -402,7 +404,7 @@ const Container = styled(Box)`
         transform: translateX(-100%);
         outline: none;
         scale: 0.5;
-        background-color: rgb(50, 116, 105);
+        background-color: rgb(0, 181, 184);
         text-transform: uppercase;
         height: 40px;
         width: 40px;
@@ -456,7 +458,7 @@ const Container = styled(Box)`
     .button-56:hover {
         outline: 0;
         border-width: 3px;
-        border-image: linear-gradient(to right, #11998e, #38ef7d);
+        border-image: linear-gradient(to right, #11998e, rgb(0, 181, 184));
         border-image-slice: 1;
         color: #1b1b1b;
     }

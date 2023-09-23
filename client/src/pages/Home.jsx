@@ -60,12 +60,12 @@ const Container = styled(Box)`
         right: 0%;
         bottom: 2%;
         z-index: 999;
-        background-color: rgb(50, 116, 105);
+        background-color: rgb(0, 181, 184);
         opacity: 0.7;
         scale: 0.8;
         &:hover {
             opacity: 1;
-            background-color: rgb(50, 116, 105);
+            background-color: rgb(0, 181, 184);
         }
     }
 `;

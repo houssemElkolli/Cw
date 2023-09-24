@@ -6,11 +6,12 @@ import PartnerTable from "../components/PartnerTable";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const CarouselSettings = () => {
-    const axiosPrivate = useAxiosPrivate()
+    const axiosPrivate = useAxiosPrivate();
     const [fileArray, setFileArray] = useState([]);
     const [UpdateTime, setUpdateTime] = useState(false);
     const [rld, setRld] = useState(false);
     const [itemToUpdate, setItemToUpdate] = useState();
+    const [uploading, setUploading] = useState(false);
 
     const imageRef = useRef(null);
     const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
@@ -30,6 +31,7 @@ const CarouselSettings = () => {
     });
 
     const handleFormSubmit = (data, onSubmitProps) => {
+        setUploading(true);
         const formData = new FormData();
 
         for (let value in data) {
@@ -44,12 +46,16 @@ const CarouselSettings = () => {
                 onSubmitProps.resetForm();
                 setFileArray([]);
                 setRld(!rld);
+                setUploading(false);
             })
             .catch((err) => {
+                setUploading(false);
                 console.log(err);
             });
     };
     const handleFormUpdate = (data, onSubmitProps) => {
+        setUploading(true);
+
         console.log(data);
         const formData = new FormData();
 
@@ -64,8 +70,10 @@ const CarouselSettings = () => {
                 onSubmitProps.resetForm();
                 setRld(!rld);
                 setFileArray([]);
+                setUploading(false);
             })
             .catch((err) => {
+                setUploading(false);
                 console.log(err);
             });
     };
@@ -157,6 +165,25 @@ const CarouselSettings = () => {
                                         Upload Image
                                     </button>
                                 </Box>
+                                {uploading && (
+                                    <Box
+                                        sx={{
+                                            gridColumn: "span 4",
+                                            margin: "5px auto",
+                                        }}
+                                    >
+                                        <div class="lds-roller">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </Box>
+                                )}
 
                                 <div className="btn-container">
                                     <button

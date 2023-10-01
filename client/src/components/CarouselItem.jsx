@@ -9,6 +9,7 @@ import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { toggleModel } from "../state/authSlice";
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "../api/axios";
+import { Fragment } from "react";
 
 const CarouselItem = ({
     carouselItems,
@@ -51,7 +52,7 @@ const CarouselItem = ({
         }
     };
     const handelFullScreen = (id) => {
-        const vid = document.getElementById(`${id}`);
+        const vid = document.querySelector("videoContainer");
 
         if (document.fullscreenElement == null) {
             // vid.requestFullscreen();
@@ -70,8 +71,6 @@ const CarouselItem = ({
             element.webkitRequestFullscreen();
         } else if (element.msRequestFullscreen) {
             element.msRequestFullscreen();
-        } else {
-            element.classList.toggle("fullscreen");
         }
     };
 
@@ -102,7 +101,7 @@ const CarouselItem = ({
                 </>
             )}
             {carouselItems.type === "v" && (
-                <>
+                <Fragment className="videoContainer">
                     <video autoPlay muted loop id={`${carouselItems._id}`}>
                         <source
                             src={`${BASE_URL}/carousel/streamingVideos/${carouselItems.picturePath}`}
@@ -162,7 +161,7 @@ const CarouselItem = ({
                             previousItem();
                         }}
                     />
-                </>
+                </Fragment>
             )}
         </div>
     );

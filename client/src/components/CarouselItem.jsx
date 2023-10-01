@@ -5,7 +5,7 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import MusicOffIcon from "@mui/icons-material/MusicOff";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { toggleModel } from "../state/authSlice";
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "../api/axios";
@@ -54,12 +54,13 @@ const CarouselItem = ({
         const vid = document.getElementById(`${id}`);
 
         if (document.fullscreenElement == null) {
-            vid.requestFullscreen()
-        }else {
-            document.exitFullscreen()
-        }
+            // vid.requestFullscreen();
+            launchIntoFullscreen(vid);
 
-    }
+        } else {
+            document.exitFullscreen();
+        }
+    };
     return (
         <div
             className="swiper-slide"

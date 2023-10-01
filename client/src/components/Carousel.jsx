@@ -306,4 +306,17 @@ const Container = styled(Box)`
             scale: 0.8;
         }
     }
+    .FullScreenbutton{
+        z-index: 9999;
+        position: absolute;
+        right: 0.8%;
+        top: 28%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
 `;

@@ -52,7 +52,7 @@ const CarouselItem = ({
         }
     };
     const handelFullScreen = (id) => {
-        const vid = document.querySelector("videoContainer");
+        const vid = document.getElementById(`${id}`);
 
         if (document.fullscreenElement == null) {
             // vid.requestFullscreen();
@@ -101,8 +101,8 @@ const CarouselItem = ({
                 </>
             )}
             {carouselItems.type === "v" && (
-                <div className="videoContainer" style={{margin : "0px" , padding : "0px" }}>
-                    <video autoPlay muted loop id={`${carouselItems._id}`}>
+                <>
+                    <video autoPlay muted loop id={`${carouselItems._id}`} controlsList=" nodownload noremoteplayback">
                         <source
                             src={`${BASE_URL}/carousel/streamingVideos/${carouselItems.picturePath}`}
                         />
@@ -161,7 +161,7 @@ const CarouselItem = ({
                             previousItem();
                         }}
                     />
-                </div>
+                </>
             )}
         </div>
     );

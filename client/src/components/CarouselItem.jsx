@@ -101,7 +101,7 @@ const CarouselItem = ({
                 </>
             )}
             {carouselItems.type === "v" && (
-                <div className="videoContainer">
+                <div className="videoContainer" style={{margin : "0px" , padding : "0px" }}>
                     <video autoPlay muted loop id={`${carouselItems._id}`}>
                         <source
                             src={`${BASE_URL}/carousel/streamingVideos/${carouselItems.picturePath}`}

@@ -57,10 +57,24 @@ const CarouselItem = ({
             // vid.requestFullscreen();
             launchIntoFullscreen(vid);
 
-        } else {
-            document.exitFullscreen();
+            // } else {
+            //     document.exitFullscreen();
         }
     };
+    const launchIntoFullscreen = (element) => {
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+        } else {
+            element.classList.toggle("fullscreen");
+        }
+    };
+
     return (
         <div
             className="swiper-slide"

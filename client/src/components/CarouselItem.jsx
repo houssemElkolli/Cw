@@ -101,7 +101,7 @@ const CarouselItem = ({
                 </>
             )}
             {carouselItems.type === "v" && (
-                <Fragment className="videoContainer">
+                <div className="videoContainer">
                     <video autoPlay muted loop id={`${carouselItems._id}`}>
                         <source
                             src={`${BASE_URL}/carousel/streamingVideos/${carouselItems.picturePath}`}
@@ -161,7 +161,7 @@ const CarouselItem = ({
                             previousItem();
                         }}
                     />
-                </Fragment>
+                </div>
             )}
         </div>
     );

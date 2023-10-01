@@ -240,7 +240,8 @@ const Container = styled(Box)`
   height: 100vh;
   width: 100vw;
   background-color: #fff;
-  background: rgb(2, 0, 36);
+  background-color:  rgb(1, 0, 19);
+  /* background: rgb(2, 0, 36); */
   /* background: linear-gradient(90deg, rgba(2,0,36,0.8100490196078431) 0%, rgba(0,212,255,1) 50%, rgba(2,0,36,0.8128501400560224) 100%); */
 
   display: grid;

@@ -53,11 +53,11 @@ const CarouselItem = ({
     };
     const handelFullScreen = (id) => {
         const vid = document.getElementById(`${id}`);
-        const elem = document.querySelector("swiper-slide")
+        const ee = document.getElementById("fullScreen");
 
         if (document.fullscreenElement == null) {
             // vid.requestFullscreen();
-            launchIntoFullscreen(vid);
+            launchIntoFullscreen(ee);
 
             // } else {
             //     document.exitFullscreen();
@@ -80,6 +80,7 @@ const CarouselItem = ({
             className="swiper-slide"
             onClick={() => dispatch(toggleModel({ model: false }))}
             key={carouselItems._id}
+            id="fullScreen"
         >
             {carouselItems.type === "i" && (
                 <>

@@ -309,7 +309,7 @@ const Container = styled(Box)`
     .FullScreenbutton{
         z-index: 9999;
         position: absolute;
-        right: 0.8%;
+        right: 1%;
         top: 13%;
         border-radius: 50%;
         border: none;

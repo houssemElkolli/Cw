@@ -104,6 +104,21 @@ const CarouselItem = ({
                             previousItem();
                         }}
                     />
+                    {fullScreen ? (
+                        <FullscreenExitIcon
+                            className="FullScreenbutton"
+                            onClick={() => {
+                                handelFullScreen(carouselItems._id);
+                            }}
+                        />
+                    ) : (
+                        <FullscreenIcon
+                            className="FullScreenbutton"
+                            onClick={() => {
+                                handelFullScreen(carouselItems._id);
+                            }}
+                        />
+                    )}
                 </>
             )}
             {carouselItems.type === "v" && (

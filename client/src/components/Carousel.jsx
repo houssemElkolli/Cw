@@ -245,7 +245,7 @@ const Container = styled(Box)`
         z-index: 9999;
         position: absolute;
         right: 1%;
-        top: 13%;
+        top: 18%;
         border-radius: 50%;
         border: none;
         cursor: pointer;
@@ -258,7 +258,7 @@ const Container = styled(Box)`
         z-index: 9999;
         position: absolute;
         right: 1%;
-        top: 18%;
+        top: 23%;
         border-radius: 50%;
         border: none;
         cursor: pointer;
@@ -271,7 +271,7 @@ const Container = styled(Box)`
         z-index: 9999;
         position: absolute;
         right: 1%;
-        top: 23%;
+        top: 28%;
         border-radius: 50%;
         border: none;
         cursor: pointer;
@@ -310,7 +310,7 @@ const Container = styled(Box)`
         z-index: 9999;
         position: absolute;
         right: 0.8%;
-        top: 28%;
+        top: 13%;
         border-radius: 50%;
         border: none;
         cursor: pointer;

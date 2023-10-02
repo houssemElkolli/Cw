@@ -6,10 +6,11 @@ import MusicOffIcon from "@mui/icons-material/MusicOff";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import { toggleModel } from "../state/authSlice";
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "../api/axios";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 
 const CarouselItem = ({
     carouselItems,
@@ -18,6 +19,7 @@ const CarouselItem = ({
     previousItem,
 }) => {
     const dispatch = useDispatch();
+    const [fullScreen, setFullScreen] = useState(false);
 
     const handelClick = (id) => {
         const vid = document.getElementById(`${id}`);
@@ -58,9 +60,11 @@ const CarouselItem = ({
         if (document.fullscreenElement == null) {
             // vid.requestFullscreen();
             launchIntoFullscreen(ee);
+            setFullScreen(true);
 
-            // } else {
-            //     document.exitFullscreen();
+        } else {
+            document.exitFullscreen();
+            setFullScreen(false);
         }
     };
     const launchIntoFullscreen = (element) => {
@@ -104,7 +108,13 @@ const CarouselItem = ({
             )}
             {carouselItems.type === "v" && (
                 <>
-                    <video autoPlay muted loop id={`${carouselItems._id}`} controlsList=" nodownload noremoteplayback">
+                    <video
+                        autoPlay
+                        muted
+                        loop
+                        id={`${carouselItems._id}`}
+                        controlsList=" nodownload noremoteplayback"
+                    >
                         <source
                             src={`${BASE_URL}/carousel/streamingVideos/${carouselItems.picturePath}`}
                         />
@@ -139,12 +149,23 @@ const CarouselItem = ({
                             }}
                         />
                     )}
-                    <FullscreenIcon
-                        className="FullScreenbutton"
-                        onClick={() => {
-                            handelFullScreen(carouselItems._id);
-                        }}
-                    />
+
+                    {fullScreen ? (
+                        <FullscreenExitIcon
+                            className="FullScreenbutton"
+                            onClick={() => {
+                                handelFullScreen(carouselItems._id);
+                            }}
+                        />
+                    ) : (
+                        <FullscreenIcon
+                            className="FullScreenbutton"
+                            onClick={() => {
+                                handelFullScreen(carouselItems._id);
+                            }}
+                        />
+                    )}
+
                     <ReplayIcon
                         className="resetbutton"
                         onClick={() => {

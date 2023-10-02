@@ -53,6 +53,7 @@ const CarouselItem = ({
     };
     const handelFullScreen = (id) => {
         const vid = document.getElementById(`${id}`);
+        const elem = document.querySelector("swiper-slide")
 
         if (document.fullscreenElement == null) {
             // vid.requestFullscreen();

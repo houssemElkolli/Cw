@@ -7,7 +7,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import { toggleModel } from "../state/authSlice";
+import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
+import { toggleModel, toggleSidePagination } from "../state/authSlice";
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "../api/axios";
 import { Fragment, useState } from "react";
@@ -61,7 +62,6 @@ const CarouselItem = ({
             // vid.requestFullscreen();
             launchIntoFullscreen(ee);
             setFullScreen(true);
-
         } else {
             document.exitFullscreen();
             setFullScreen(false);
@@ -92,6 +92,13 @@ const CarouselItem = ({
                         src={`${BASE_URL}/assets/${carouselItems.picturePath}`}
                         alt={carouselItems.alt}
                     />
+                    <DynamicFeedIcon
+                        className="sidePaginationButton"
+                        onClick={() => {
+                            dispatch(toggleSidePagination({ sidePagination: true }));
+                        }}
+                    />
+
                     <ArrowForwardIosIcon
                         className="nextbutton"
                         onClick={() => {
@@ -197,6 +204,12 @@ const CarouselItem = ({
                         className="prevbutton"
                         onClick={() => {
                             previousItem();
+                        }}
+                    />
+                    <DynamicFeedIcon
+                        className="sidePaginationButton"
+                        onClick={() => {
+                            dispatch(toggleSidePagination({ sidePagination: true }));
                         }}
                     />
                 </>

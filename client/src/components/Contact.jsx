@@ -188,7 +188,7 @@ const Contact = () => {
                                                     letterSpacing: "2px",
                                                     fontFamily:
                                                         "poppins, cursive",
-                                                    color: "rgb(50, 116, 105)",
+                                                    color: "#00b5b8",
                                                     padding: "10px 30px",
                                                     // borderRadius : "30px",
                                                     // backgroundImage: "linear-gradient(to right,  rgba(68, 129, 235, 0.753), rgba(68, 129, 235, 0.377), rgba(4, 192, 254, 0.767), rgb(63, 134, 237))",
@@ -288,7 +288,9 @@ const Contact = () => {
                                                 onChange={handleChange}
                                                 value={values.phoneNumber}
                                                 error={
-                                                    Boolean(touched.phoneNumber) &&
+                                                    Boolean(
+                                                        touched.phoneNumber
+                                                    ) &&
                                                     Boolean(errors.phoneNumber)
                                                 }
                                             />
@@ -362,7 +364,7 @@ const Container = styled(Box)`
     background-color: rgb(255, 253, 253);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     font-size: 12px;
-    opacity: 70%;
+    opacity: 90%;
 
     animation-name: appear;
     animation-duration: 0.5s;
@@ -370,18 +372,18 @@ const Container = styled(Box)`
     @keyframes appear {
         0% {
             opacity: 0%;
-            /* scale: 0; */
+            scale: 0;
             transform: translateX(20px);
         }
         70% {
             opacity: 0%;
-            /* scale: 0.7; */
+            scale: 0.7;
             transform: translateX(5px);
         }
 
         100% {
             opacity: 70%;
-            /* scale: 1; */
+            scale: 1;
         }
     }
     .form-box {
@@ -392,20 +394,23 @@ const Container = styled(Box)`
         grid-gap: 10px 10px;
         padding: 10px 30px;
         padding-bottom: 30px;
-        border: 3px solid rgb(50, 116, 105);
+        border: 3px solid #00b5b8;
     }
 
     .close-btn {
         position: absolute;
-        top: -5%;
+        top: -3.3%;
         left: 50%;
         transform: translateX(-100%);
         outline: none;
         scale: 0.5;
-        background-color: rgb(50, 116, 105);
+        background-color: #00b5b8;
         text-transform: uppercase;
         height: 40px;
         width: 40px;
+        border-radius: 50%;
+        padding: 0 50px ;
+        box-shadow: none;
     }
 
     .button-56 {
@@ -456,7 +461,7 @@ const Container = styled(Box)`
     .button-56:hover {
         outline: 0;
         border-width: 3px;
-        border-image: linear-gradient(to right, #11998e, #38ef7d);
+        border-image: linear-gradient(to right, #11998e, #00b5b8);
         border-image-slice: 1;
         color: #1b1b1b;
     }

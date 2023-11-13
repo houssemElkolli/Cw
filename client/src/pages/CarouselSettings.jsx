@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, styled } from "@mui/material";
+import { Box, TextField, styled } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -8,7 +8,6 @@ import { useRef, useState } from "react";
 import * as Yup from "yup";
 import CarouselTable from "../components/CarouselTable";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import axios from "../api/axios";
 
 const CarouselSettings = () => {
     const axiosPrivate = useAxiosPrivate();

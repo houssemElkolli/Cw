@@ -5,8 +5,6 @@ import { fileURLToPath } from "url";
 
 export const addItem = async (req, res) => {
     try {
-        console.log(req.file);
-        console.log(req.file.filename);
         const { alt, type, order } = req.body;
         const picturePath = req.file.filename;
         if (order) {
@@ -68,7 +66,6 @@ export const updateItem = async (req, res) => {
             res.status(201).json("item updated");
         }
     } catch (error) {
-        console.log(error);
         res.status(500).json(error);
     }
 };
@@ -95,7 +92,6 @@ export const swapCarouselItems = async (req, res) => {
 export const revertItemsOrder = async (req, res) => {
     const items = req.body;
 
-    console.log(items);
 
     const revertedItems = await Carousel.updateMany(
         { _id: { $in: [...items] } },
@@ -119,7 +115,6 @@ export const getCarouselItems = async (req, res) => {
 };
 export const getCarouselItem = async (req, res) => {
     try {
-        console.log(req.query.itemNumber);
         const itemNumber = req.query.itemNumber || 0;
         const itemPerPage = 1;
 
@@ -134,6 +129,65 @@ export const getCarouselItem = async (req, res) => {
     }
 };
 
+export const sidePaginationItems = async (req, res) => {
+    try {
+        console.log(req.query.page);
+        const page = req.query.page || 0;
+        const itemPerPage = 5;
+
+        const items = await Carousel.find({})
+            .sort({ order: 1, createdAt: -1 })
+            .limit(itemPerPage)
+            .skip(page * itemPerPage);
+
+        res.status(200).json({ items });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+export const gettingThumbnail = async (req, res) => {
+    const filePath = req.params.videoName;
+
+    if (!filePath) {
+        return res.status(404).send("File not found");
+    }
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
+    const stat = fs.statSync(__dirname + "/../public/assets/" + filePath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+
+    if (range) {
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+        const chunksize = end - start + 1;
+        const file = fs.createReadStream(
+            __dirname + "/../public/assets/" + filePath,
+            { start, end }
+        );
+        const head = {
+            "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": chunksize,
+            "Content-Type": "video/mp4",
+        };
+        res.writeHead(206, head);
+        file.pipe(res);
+    } else {
+        const head = {
+            "Content-Length": fileSize,
+            "Content-Type": "video/mp4",
+        };
+        res.writeHead(200, head);
+        fs.createReadStream(__dirname + "/../public/assets/" + filePath).pipe(
+            res
+        );
+    }
+};
+
 export const streamingVideos = async (req, res) => {
     const filePath = req.params.videoName;
 
@@ -143,9 +197,7 @@ export const streamingVideos = async (req, res) => {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
 
-    console.log(__dirname + "/../public/assets/" + filePath);
     const stat = fs.statSync(__dirname + "/../public/assets/" + filePath);
-    console.log(stat);
     const fileSize = stat.size;
     const range = req.headers.range;
 
@@ -202,17 +254,16 @@ export const deleteCarouselItems = async (req, res) => {
             fs.unlinkSync(
                 __dirname + "/../public/assets/" + doc.picturePath,
                 () => {
-                    if (err) console.log(err); 
+                    if (err) console.log(err);
                     else console.log("itemDeleted");
                 }
             );
-            console.log(doc);
         }
 
         const carouselItems = await Carousel.deleteMany({
             _id: { $in: [...items] },
         });
-        
+
         res.status(200).json({ carouselItems });
     } catch (err) {
         res.status(500).json({ error: err.message });

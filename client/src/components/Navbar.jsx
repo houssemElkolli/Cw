@@ -139,8 +139,8 @@ const Container = styled(Box)`
         background-size: 100%;
         overflow: hidden;
         text-decoration: none;
-        background-color: rgb(50, 116, 105);
-        /* box-shadow: 0 0 1px 3px rgb(74, 141, 130); */
+        background-color: #00B5B8;
+        box-shadow: 0 0 1px 3px #00B5B8;
     }
 
     .menu-button:active {
@@ -182,12 +182,12 @@ const Container = styled(Box)`
         transform: translate(0px, 0px);
         transition: transform 500ms;
         z-index: -2;
-        color: beige;
+        color: #fff;
         display: grid;
         justify-content: center;
         align-items: center;
-        font-size: 13px;
-        opacity: 0.7;
+        font-size: 11px;
+        opacity: 0.8;
         visibility: hidden;
     }
 
@@ -197,29 +197,32 @@ const Container = styled(Box)`
     }
 
     .menu-item a {
-        width: 75px;
-        height: 50px;
+        width: 76px;
+        height: 51px;
         position: absolute;
         top: -4%;
         left: -3%;
         text-decoration: none;
-        color: #dddddd;
+        color: #fff;
         border-radius: 50%;
         display: grid;
         justify-content: center;
         align-items: center;
+
     }
     #menu:target > .menu-item {
-        animation: animate 2s;
-        animation-delay: 0s;
+        animation: animate 1s;
         animation-iteration-count: 1;
+        border: 2px solid #fff;
+
+
 
         @keyframes animate {
-            from {
+            0% {
                 opacity: 0;
             }
-            to {
-                opacity: 0.7;
+            100% {
+                opacity: 0.8;
             }
         }
     }
@@ -228,79 +231,78 @@ const Container = styled(Box)`
     #menu:target > .menu-item:nth-of-type(7) {
         transform: translateY(420px);
         transition-delay: 0s;
-        border: 2px solid beige;
+        border: 2px solid #fff;
         width: 75px;
         visibility: visible;
-        background-color: rgb(50, 116, 105);
-        box-shadow: 0 0 3px 5px rgb(74, 141, 130);
+        background-color: #00B5B8;
+        box-shadow: 0 0 3px 5px #00B5B8;
     }
     //Home
     #menu:target > .menu-item:nth-of-type(6) {
         transform: translateY(350px);
         transition-delay: 0s;
-        border: 2px solid beige;
+        border: 2px solid #fff;
         width: 75px;
         visibility: visible;
-        background-color: rgb(50, 116, 105);
-        box-shadow: 0 0 3px 5px rgb(74, 141, 130);
+        background-color: #00B5B8;
+        box-shadow: 0 0 3px 5px rgb(0, 181, 184);
     }
     //about
     #menu:target > .menu-item:nth-of-type(5) {
         transform: translateY(280px);
         transition-delay: 0.1s;
-        border: 2px solid beige;
+        border: 2px solid #fff;
         width: 75px;
         visibility: visible;
-        background-color: rgb(50, 116, 105);
-        box-shadow: 0 0 3px 5px rgb(74, 141, 130);
+        background-color: #00B5B8;
+        box-shadow: 0 0 3px 5px #00B5B8;
     }
     /* team */
     #menu:target > .menu-item:nth-of-type(4) {
         transform: translateY(210px);
         transition-delay: 0.2s;
-        border: 2px solid beige;
+        border: 2px solid #fff;
         width: 75px;
         visibility: visible;
-        background-color: rgb(50, 116, 105);
-        box-shadow: 0 0 3px 5px rgb(74, 141, 130);
+        background-color: #00B5B8;
+        box-shadow: 0 0 3px 5px #00B5B8;
     }
     /* parteners */
     #menu:target > .menu-item:nth-of-type(3) {
         transform: translateY(140px);
         transition-delay: 0.3s;
-        border: 2px solid beige;
+        border: 2px solid #fff;
         width: 75px;
         visibility: visible;
-        background-color: rgb(50, 116, 105);
-        box-shadow: 0 0 3px 5px rgb(74, 141, 130);
+        background-color: #00B5B8;
+        box-shadow: 0 0 3px 5px #00B5B8;
     }
 
     /* work */
     #menu:target > .menu-item:nth-of-type(2) {
         transform: translateY(70px);
         transition-delay: 0.4s;
-        border: 2px solid beige;
+        border: 2px solid #fff;
         width: 75px;
         visibility: visible;
-        background-color: rgb(50, 116, 105);
-        box-shadow: 0 0 3px 5px rgb(74, 141, 130);
+        background-color: #00B5B8;
+        box-shadow: 0 0 3px 5px #00B5B8;
     }
     /* login */
     #menu:target > .login {
         transform: translateY(0);
         transition-delay: 0.3s;
-        border: 2px solid beige;
+        border: 2px solid #fff;
         width: 75px;
         visibility: hidden;
-        background-color: rgb(50, 116, 105);
-        box-shadow: 0 0 3px 5px rgb(74, 141, 130);
+        background-color: #00B5B8;
+        box-shadow: 0 0 3px 5px #00B5B8;
     }
 
     #menu:target > .menu-item:has(.active) {
-        opacity: 0.7;
         a {
             color: #fff;
-            box-shadow: 0 0 3px 5px rgb(2, 253, 253);
+            box-shadow: 0 0 20px 5px rgb(255, 255, 255);
         }
     }
 

@@ -10,6 +10,8 @@ import {
     revertItemsOrder,
     updateItem,
     addItem,
+    gettingThumbnail,
+    sidePaginationItems
 } from "../controllers/carousel.js";
 import multer from "multer";
 
@@ -29,7 +31,9 @@ const upload = multer({ storage });
 
 
 router.get("/getCarouselItem", getCarouselItem);
+router.get("/sidePaginationItems", sidePaginationItems);
 router.get("/streamingVideos/:videoName", streamingVideos);
+router.get("/gettingThumbnail/:videoName", gettingThumbnail);
 router.get("/getTotalNumber", getTotalNumber);
 
 //protected Routes

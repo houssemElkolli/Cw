@@ -7,11 +7,16 @@ import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 import CarouselItem from "./CarouselItem";
 import LoadingSpin from "./LoadingSpin";
+import { setItemNumber, setIsLoading } from "../state/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Carousel = ({ totalNumber }) => {
+    const itemNumber = useSelector((state) => state.auth.itemNumber);
+    const isLoading = useSelector((state) => state.auth.isLoading);
+    const dispatch = useDispatch();
     const [carouselItems, setCarouselItems] = useState([]);
-    const [itemNumber, setItemNumber] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+    // const [itemNumber, setItemNumber] = useState(0);
+    // const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         axios
@@ -19,22 +24,27 @@ const Carousel = ({ totalNumber }) => {
             .then((res) => {
                 console.log(res.data);
                 setCarouselItems(res.data.carouselItems[0]);
-                setIsLoading(false);
+                dispatch(setIsLoading(false));
+
+                // setIsLoading(false);
             });
     }, [itemNumber]);
 
     const nextItem = () => {
         if (itemNumber < totalNumber - 1) {
-            setItemNumber((itemNumber) => itemNumber + 1);
-            setIsLoading(true);
-            console.log(itemNumber);
+            // setItemNumber((itemNumber) => itemNumber + 1);
+            dispatch(setItemNumber(itemNumber + 1));
+            dispatch(setIsLoading(true));
+            // setIsLoading(true);
         }
     };
     const previousItem = () => {
         if (itemNumber > 0) {
-            setItemNumber((itemNumber) => itemNumber - 1);
-            setIsLoading(true);
-            console.log(itemNumber);
+            dispatch(setItemNumber(itemNumber - 1));
+            dispatch(setIsLoading(true));
+
+            // setItemNumber((itemNumber) => itemNumber - 1);
+            // setIsLoading(true);
         }
     };
 
@@ -48,14 +58,14 @@ const Carousel = ({ totalNumber }) => {
                     <LoadingSpin />
                 ) : (
                     <>
-                        <div className="imageee">
+                        {/* <div className="imageee">
                             <div className="rotateContainer">
-                                <div class="phone"></div>
-                                <div class="message">
+                                <div className="phone"></div>
+                                <div className="message">
                                     Please rotate your device!
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <CarouselItem
                             carouselItems={carouselItems}
                             setCarouselItems={setCarouselItems}
@@ -65,7 +75,7 @@ const Carousel = ({ totalNumber }) => {
                     </>
                 )}
 
-                <div className="paginationBulletContainer">
+                {/* <div className="paginationBulletContainer">
                     {Array(totalNumber)
                         .fill(0)
                         .map((s, index) => (
@@ -84,7 +94,7 @@ const Carousel = ({ totalNumber }) => {
                                 {index + 1}
                             </span>
                         ))}
-                </div>
+                </div> */}
             </Container>
         </>
     );
@@ -95,12 +105,11 @@ export default Carousel;
 const Container = styled(Box)`
     overflow-y: hidden;
 
-    @media screen and (orientation: portrait) {
+    /* @media screen and (orientation: portrait) {
         .mySwiper {
             display: none;
         }
         .imageee {
-            /* display: block; */
             height: 100vh;
             width: 100%;
             background-color: rgb(2, 0, 36);
@@ -124,24 +133,22 @@ const Container = styled(Box)`
         .imageee {
             display: none;
         }
-    }
-    .phone {
+    } */
+    /* .phone {
         height: 100px;
         width: 50px;
         border: 3px solid white;
         border-radius: 10px;
         animation: rotate 1.5s infinite alternate ease-in-out;
-        /* display: none; */
-    }
+    } */
 
-    .message {
+    /* .message {
         color: white;
         font-size: 1em;
         margin-top: 40px;
-        /* display: none; */
-    }
+    } */
 
-    @keyframes rotate {
+    /* @keyframes rotate {
         0% {
             transform: rotate(-90deg);
             border: 3px solid rgb(0, 181, 54);
@@ -153,7 +160,7 @@ const Container = styled(Box)`
             transform: rotate(0deg);
             border: 3px solid rgb(181, 21, 0);
         }
-    }
+    } */
 
     /* @media only screen and (max-device-width: 812px) and (orientation: landscape) {
         .phone,
@@ -241,46 +248,7 @@ const Container = styled(Box)`
         background-color: rgb(50, 116, 105);
     }
 
-    .playbutton {
-        z-index: 9999;
-        position: absolute;
-        right: 1%;
-        top: 18%;
-        border-radius: 50%;
-        border: none;
-        cursor: pointer;
-        color: #fff;
-        &:active {
-            scale: 0.8;
-        }
-    }
-    .resetbutton {
-        z-index: 9999;
-        position: absolute;
-        right: 1%;
-        top: 23%;
-        border-radius: 50%;
-        border: none;
-        cursor: pointer;
-        color: #fff;
-        &:active {
-            scale: 0.8;
-        }
-    }
-    .soundbutton {
-        z-index: 9999;
-        position: absolute;
-        right: 1%;
-        top: 28%;
-        border-radius: 50%;
-        border: none;
-        cursor: pointer;
-        color: #fff;
-        &:active {
-            scale: 0.8;
-        }
-    }
-    .nextbutton {
+    .sidePaginationButton {
         z-index: 9999;
         position: absolute;
         right: 1%;
@@ -293,10 +261,10 @@ const Container = styled(Box)`
             scale: 0.8;
         }
     }
-    .prevbutton {
+    .nextbutton {
         z-index: 9999;
         position: absolute;
-        right: 0.8%;
+        right: 1%;
         top: 8%;
         border-radius: 50%;
         border: none;
@@ -306,11 +274,64 @@ const Container = styled(Box)`
             scale: 0.8;
         }
     }
-    .FullScreenbutton{
+    .prevbutton {
+        z-index: 9999;
+        position: absolute;
+        right: 0.8%;
+        top: 13%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
+    .FullScreenbutton {
         z-index: 9999;
         position: absolute;
         right: 1%;
-        top: 13%;
+        top: 18%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
+
+    .playbutton {
+        z-index: 9999;
+        position: absolute;
+        right: 1%;
+        top: 23%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
+    .resetbutton {
+        z-index: 9999;
+        position: absolute;
+        right: 1%;
+        top: 28%;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        &:active {
+            scale: 0.8;
+        }
+    }
+    .soundbutton {
+        z-index: 9999;
+        position: absolute;
+        right: 1%;
+        top: 33%;
         border-radius: 50%;
         border: none;
         cursor: pointer;

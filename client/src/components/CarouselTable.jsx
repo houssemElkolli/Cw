@@ -497,13 +497,13 @@ export default function UsersTable({ rld, setUpdateTime, setItemToUpdate }) {
                                                             {row.type ===
                                                                 "v" && (
                                                                 <video
+                                                                    controls
                                                                     style={{
                                                                         pointerEvents:
                                                                             "all",
                                                                         height: "350px",
                                                                         width: "622.3px",
                                                                     }}
-                                                                    controls
                                                                     id={`${row._id}`}
                                                                 >
                                                                     <source

@@ -224,7 +224,7 @@ const CarouselSettings = () => {
                                             margin: "5px auto",
                                         }}
                                     >
-                                        <div class="lds-roller">
+                                        <div className="lds-roller">
                                             <div></div>
                                             <div></div>
                                             <div></div>

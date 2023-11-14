@@ -10,7 +10,7 @@ const CarouselSchema = new mongoose.Schema({
         type: String,
         required: [true, "Picture is required"],
     },
-    type: {
+    type: { 
         type: String,
         required: [true, "Picture is required"],
     },
